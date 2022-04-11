@@ -17,10 +17,17 @@ devtools::install_github("BenWilliams-NOAA/swo")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to query the data for the GOA or AI:
 
 ``` r
 library(swo)
-## basic example code
+yrs = 2017
+species = c(10110, 21740)
+region = 'GOA'
+afsc_user = 'your_afsc_username'
+afsc_pwd = 'your_afsc_pwd'
+
+query_data(region, species, yrs, afsc_user, afsc_pwd)
+
 ```
 
