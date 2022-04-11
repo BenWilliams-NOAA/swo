@@ -55,6 +55,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd) {
   
   # cpue data 
   cp = sql_read('cpue.sql')
+  cp = sql_add(paste0(region, '.cpue'), cp)
   cp = sql_filter(x = region, sql_code = cp, flag = '-- insert region')
   cp = sql_filter(sql_precode = "IN", x = species, sql_code = cp, flag = '-- insert species')
   cp = sql_filter(sql_precode = ">=", x = yrs, sql_code = cp, flag = '-- insert year')

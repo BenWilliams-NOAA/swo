@@ -6,7 +6,8 @@ SELECT
     hauljoin,
     stratum,
     numcpue
-FROM goa.cpue 
+FROM 
+-- insert table
 WHERE species_code 
 -- insert species
 AND survey
