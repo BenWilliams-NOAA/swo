@@ -10,7 +10,7 @@
 #' @param boot_lengths switch for resampling lengths (default = NULL)
 #' @param boot_ages switch for resampling ages (default = NULL)
 #' @param length_samples change sample sizes (default = NULL)
-#' @param sample_sex change sample sizes (default = NULL)
+#' @param sex_samples change sample sizes (default = NULL)
 #'
 #' @return
 #' @export swo
@@ -20,14 +20,14 @@
 #'     boot_lengths = TRUE, length_samples = 100)
 swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL, 
                 strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
-                boot_ages = FALSE, length_samples = NULL, sample_sex = NULL) {
+                boot_ages = FALSE, length_samples = NULL, sex_samples = NULL) {
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
   
   # prep data ----
   # complete cases by length/sex/strata for all years
-  lfreq %>%
+  lfreq_data %>%
       dplyr::filter(year >= yrs) %>% 
       dplyr::group_by(species_code) %>%
       dplyr::distinct(length, year, stratum) %>%
@@ -35,7 +35,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
   
   # if no strata 
   if(is.null(strata)){
-    lfreq %>%
+    lfreq_data %>%
       dplyr::filter(year >= yrs) %>% 
       dplyr::group_by(species_code) %>%
       dplyr::distinct(length, year) %>%
@@ -43,17 +43,17 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
   }
   
   # first pass of filtering
-  data.table::setDT(cpue) %>%
+  data.table::setDT(cpue_data) %>%
     tidytable::filter.(year >= yrs) %>% 
     tidytable::left_join.(strata_data) -> .cpue
   
-  data.table::setDT(lfreq) %>%
+  data.table::setDT(lfreq_data) %>%
     tidytable::filter.(year >= yrs) -> .lfreq
   
   .lfreq %>% 
     tidytable::uncount.(frequency) -> .lfreq_un
   
-  data.table::setDT(specimen) %>%
+  data.table::setDT(specimen_data) %>%
     tidytable::filter.(year >= yrs) -> .agedat
   
   # randomize hauls ----  

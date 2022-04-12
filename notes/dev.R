@@ -3,7 +3,7 @@ library(usethis)
 
 use_description()
 use_pipe()
-use_package('data.table')
+use_package('data.table', type = 'depends')
 use_package('tidytable')
 use_package('purrr')
 use_package('dplyr')

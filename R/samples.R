@@ -53,6 +53,10 @@ sample <- function(lfreq_un, samples, type = 'length') {
       dplyr::group_by(year, species_code, stratum, hauljoin) %>%
       dplyr::sample_n(if(n > samples) samples else n) -> .new_sexed
     
+    .inter %>%
+      tidytable::anti_join.(.new_sexed, by = "id") %>%
+      tidytable::mutate.(sex = 3) -> .new_unsexed
+    
     # rejoin to original unsexed
     lfreq_un %>%
       tidytable::filter.(sex == 3) %>%
@@ -71,6 +75,10 @@ sample <- function(lfreq_un, samples, type = 'length') {
     .inter %>%
       dplyr::group_by(year, species_code, stratum, hauljoin, sex) %>%
       dplyr::sample_n(if(n > samples) samples else n) -> .new_sexed
+    
+    .inter %>%
+      tidytable::anti_join.(.new_sexed, by = "id") %>%
+      tidytable::mutate.(sex = 3) -> .new_unsexed
     
     # rejoin to original unsexed
     lfreq_un %>%
@@ -96,16 +104,16 @@ lcomp <- function(lfreq_un) {
 }
 
 lpop <- function(lcomp, cpue, lngs) {
-  .lcomp %>%
+  lcomp %>%
     tidytable::summarise.(comp = sum(comp) / mean(nhauls), 
                           .by = c(year, species_code, stratum, sex, length)) -> .unk
   
   # id hauls without lengths
-  .cpue %>%
+  cpue %>%
     tidytable::filter.(!is.na(catchjoin), 
-                       !(hauljoin %in% .lcomp$hauljoin)) -> .no_length
+                       !(hauljoin %in% lcomp$hauljoin)) -> .no_length
   
-  .cpue %>%
+  cpue %>%
     tidytable::mutate.(st_num = mean(numcpue) * area,
                        tot = sum(numcpue), 
                        .by = c(year, species_code, stratum)) %>%
@@ -114,14 +122,14 @@ lpop <- function(lcomp, cpue, lngs) {
   
   # if there are any samples w/o lengths rejoin them
   if(nrow(.no_length) == 0){
-    .lcomp %>%
+    lcomp %>%
       tidytable::left_join.(.pop) %>%
       tidytable::mutate.(sz_pop = round(comp * abund, 0)) -> .temp
   } else {
     .no_length %>%
       tidytable::left_join.(.unk) %>%
       tidytable::select.(year, species_code, stratum, hauljoin, sex, length, comp) %>%
-      tidytable::bind_rows.(.lcomp) %>%
+      tidytable::bind_rows.(lcomp) %>%
       tidytable::left_join.(.pop) %>%
       tidytable::mutate.(sz_pop = round(comp * abund, 0)) -> .temp
   }

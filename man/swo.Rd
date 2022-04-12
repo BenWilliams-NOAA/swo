@@ -15,7 +15,7 @@ swo(
   boot_lengths = FALSE,
   boot_ages = FALSE,
   length_samples = NULL,
-  sample_sex = NULL
+  sex_samples = NULL
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ swo(
 
 \item{length_samples}{change sample sizes (default = NULL)}
 
-\item{sample_sex}{change sample sizes (default = NULL)}
+\item{sex_samples}{change sample sizes (default = NULL)}
 }
 \value{
 
