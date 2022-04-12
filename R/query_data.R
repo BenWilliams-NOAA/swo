@@ -68,7 +68,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd) {
   
   # strata (GOA and AI)
   st = sql_read('strata.sql')
-  st = sql_filter(x = region, sql_code = cp, flag = '-- insert region')
+  st = sql_filter(x = region, sql_code = st, flag = '-- insert region')
   sql_run(afsc, st) %>% 
     dplyr::rename_all(tolower) %>% 
     vroom::vroom_write(., 
