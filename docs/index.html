@@ -74,11 +74,25 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common
-problem:</p>
+<p>This is a basic example which shows you how to query the data for the
+GOA or AI:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">swo</span><span class="op">)</span>
-<span class="co">## basic example code</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/BenWilliams-NOAA/swo/" class="external-link">swo</a></span><span class="op">)</span>
+<span class="va">yrs</span> <span class="op">=</span> <span class="fl">2017</span>
+<span class="va">species</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10110</span>, <span class="fl">21740</span><span class="op">)</span>
+<span class="va">region</span> <span class="op">=</span> <span class="st">'GOA'</span>
+<span class="va">afsc_user</span> <span class="op">=</span> <span class="st">'your_afsc_username'</span>
+<span class="va">afsc_pwd</span> <span class="op">=</span> <span class="st">'your_afsc_pwd'</span>
+
+<span class="fu"><a href="reference/query_data.html">query_data</a></span><span class="op">(</span><span class="va">region</span>, <span class="va">species</span>, <span class="va">yrs</span>, <span class="va">afsc_user</span>, <span class="va">afsc_pwd</span><span class="op">)</span>
+
+<span class="va">cpue</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">'data'</span>, <span class="st">'cpue_goa.csv'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lfreq</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">'data'</span>, <span class="st">'lfreq_goa.csv'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">'data'</span>, <span class="st">'strata_goa.csv'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">specimen</span> <span class="op">&lt;-</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu"><a href="https://vroom.r-lib.org/reference/vroom.html" class="external-link">vroom</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">'data'</span>, <span class="st">'specimen_goa.csv'</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="reference/swo.html">swo</a></span><span class="op">(</span><span class="va">lfreq</span>, <span class="va">specimen</span>, <span class="va">cpue</span>, <span class="va">strata</span>, yrs <span class="op">=</span> <span class="fl">2017</span>, boot_hauls <span class="op">=</span> <span class="cn">TRUE</span>,
+    boot_lengths <span class="op">=</span> <span class="cn">TRUE</span>, boot_ages <span class="op">=</span> <span class="cn">TRUE</span>, length_samples <span class="op">=</span> <span class="fl">100</span>, sex_samples <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
