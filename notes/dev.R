@@ -19,5 +19,7 @@ document()
 
 use_r("utils")
 use_r('query_data')
+use_r('samples')
+use_r('swo')
 
 devtools::build()
