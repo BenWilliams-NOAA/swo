@@ -54,7 +54,8 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
     tidytable::uncount.(frequency) -> .lfreq_un
   
   data.table::setDT(specimen_data) %>%
-    tidytable::filter.(year >= yrs) -> .agedat
+    tidytable::filter.(year >= yrs) %>% 
+    tidytable::drop_na.() -> .agedat
   
   # randomize hauls ----  
   if(isTRUE(boot_hauls)) {
@@ -68,7 +69,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
       tidytable::left_join.(.lfreq_un) %>% 
       tidytable::drop_na.() -> .lfreq_un
     .hls %>% 
-      tidytable::left_join.(.agedat)  %>% 
+      tidytable::left_join.(.agedat) %>% 
       tidytable::drop_na.() -> .agedat
     
   } 
