@@ -2,7 +2,7 @@
 % Please edit documentation in R/query_data.R
 \name{query_data}
 \alias{query_data}
-\title{Query racebase}
+\title{query racebase}
 \usage{
 query_data(region, species, yrs = NULL, afsc_user, afsc_pwd)
 }
@@ -21,7 +21,7 @@ query_data(region, species, yrs = NULL, afsc_user, afsc_pwd)
 
 }
 \description{
-Query racebase
+query racebase
 }
 \examples{
 query_date(region = 'AI', 

@@ -4,11 +4,11 @@
 #' @param specimen_data age-length specimen data
 #' @param cpue_data abundance by length data 
 #' @param strata_data strata and associated area 
-#' @param yrs age filter (returns years >=)
-#' @param strata switch for analyzing by strata (default = NULL) - not currently implemented
-#' @param boot_hauls switch for resampling hauls (default = NULL)
-#' @param boot_lengths switch for resampling lengths (default = NULL)
-#' @param boot_ages switch for resampling ages (default = NULL)
+#' @param yrs age filter returns years >= (default = NULL)
+#' @param strata switch for analyzing by strata (default = FALSE) - not currently implemented
+#' @param boot_hauls switch for resampling hauls (default = FALSE)
+#' @param boot_lengths switch for resampling lengths (default = FALSE)
+#' @param boot_ages switch for resampling ages (default = FALSE)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param sex_samples change sample sizes (default = NULL)
 #'

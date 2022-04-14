@@ -27,15 +27,15 @@ swo(
 
 \item{strata_data}{strata and associated area}
 
-\item{yrs}{age filter (returns years >=)}
+\item{yrs}{age filter returns years >= (default = NULL)}
 
-\item{strata}{switch for analyzing by strata (default = NULL) - not currently implemented}
+\item{strata}{switch for analyzing by strata (default = FALSE) - not currently implemented}
 
-\item{boot_hauls}{switch for resampling hauls (default = NULL)}
+\item{boot_hauls}{switch for resampling hauls (default = FALSE)}
 
-\item{boot_lengths}{switch for resampling lengths (default = NULL)}
+\item{boot_lengths}{switch for resampling lengths (default = FALSE)}
 
-\item{boot_ages}{switch for resampling ages (default = NULL)}
+\item{boot_ages}{switch for resampling ages (default = FALSE)}
 
 \item{length_samples}{change sample sizes (default = NULL)}
 

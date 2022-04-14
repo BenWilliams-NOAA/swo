@@ -1,5 +1,5 @@
 
-#' Query racebase
+#' query racebase
 #'
 #' @param region specific region for data ('GOA', 'AI')
 #' @param species species_codes e.g., c(10110, 21740)

@@ -21,5 +21,9 @@ use_r("utils")
 use_r('query_data')
 use_r('samples')
 use_r('swo')
+use_r('ess_size')
+use_r('ess_age')
 
 devtools::build()
+
+pkgdown::build_site(examples = FALSE)
