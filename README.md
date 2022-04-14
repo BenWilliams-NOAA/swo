@@ -34,8 +34,9 @@ lfreq <- vroom::vroom(here::here('data', 'lfreq_goa.csv'))
 strata <- vroom::vroom(here::here('data', 'strata_goa.csv'))
 specimen <- vroom::vroom(here::here('data', 'specimen_goa.csv'))
 
-swo(lfreq, specimen, cpue, strata, yrs = 2017, boot_hauls = TRUE,
-    boot_lengths = TRUE, boot_ages = TRUE, length_samples = 100, sex_samples = 50)
+swo_sim(iters = 2, lfreq, specimen, cpue, strata, yrs = 2017, boot_hauls = TRUE,
+    boot_lengths = TRUE, boot_ages = TRUE, length_samples = 100, sex_samples = 50, 
+    write_comp = TRUE, save = 'test', region = 'goa')
 
 ```
 
