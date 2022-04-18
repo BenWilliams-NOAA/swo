@@ -48,7 +48,8 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
     tidytable::left_join.(strata_data) -> .cpue
   
   data.table::setDT(lfreq_data) %>%
-    tidytable::filter.(year >= yrs) -> .lfreq
+    tidytable::filter.(year >= yrs) %>% 
+    tidytable::drop_na.() -> .lfreq
   
   .lfreq %>% 
     tidytable::uncount.(frequency) -> .lfreq_un
