@@ -14,7 +14,11 @@ Authors@R:
       person(given = "Meaghan", 
              family = "Bryan" ,
              email = "meaghan.bryan@noaa.gov", 
-             role = "aut"))
+             role = "aut"),
+      person(given = "Steve", 
+             family = "Barbeaux",
+             email = "steve.barbeaux@noaa.gov", 
+             role = "ctb"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 URL: https://github.com/BenWilliams-NOAA/swo/, https://benwilliams-noaa.github.io/swo/
