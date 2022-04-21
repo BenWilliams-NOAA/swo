@@ -32,7 +32,7 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
     if(isTRUE(write_sample)){
       .new_unsexed %>% 
         dplyr::group_by(year, species_code, stratum, hauljoin) %>%
-        dplyr::count('frequency') %>% 
+        dplyr::count() %>% 
         vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
     }
     
@@ -62,7 +62,7 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
     if(isTRUE(write_sample)){
       .new_unsexed %>% 
         dplyr::group_by(year, species_code, stratum, hauljoin) %>%
-        dplyr::count('frequency') %>% 
+        dplyr::count() %>% 
         vroom::vroom_write(here::here("output", region, paste0(save, "_removed_sex.csv")), delim = ",")
     }
     
