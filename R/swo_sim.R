@@ -23,7 +23,7 @@
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                     yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
                     boot_ages = FALSE, length_samples = NULL, sex_samples = NULL, save = NULL, 
-                    write_comp = FALSE, region = NULL){
+                    write_comp = FALSE, write_sample = FALSE, region = NULL){
   
   if(isTRUE(write_comp) & is.null(save) | is.null(save)){
     stop("have to provide a name for the file, save = ...")
@@ -37,7 +37,11 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   
   # get original values
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
-            cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata)
+            cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
+            boot_hauls = FALSE, boot_lengths = FALSE, 
+            boot_ages = FALSE, length_samples = NULL, 
+            sex_samples = NULL, save = NULL, 
+            write_sample = FALSE, region = NULL)
   oga <- og$age
   ogl <- og$length
   
@@ -46,7 +50,8 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
                             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata, 
                             boot_hauls = boot_hauls, boot_lengths = boot_lengths, 
                             boot_ages = boot_ages, length_samples = length_samples, 
-                            sex_samples = sex_samples))
+                            sex_samples = sex_samples, save = save, 
+                            write_sample = write_sample, region = region))
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length

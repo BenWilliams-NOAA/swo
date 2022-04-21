@@ -19,6 +19,7 @@ swo_sim(
   sex_samples = NULL,
   save = NULL,
   write_comp = FALSE,
+  write_sample = FALSE,
   region = NULL
 )
 }

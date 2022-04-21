@@ -11,6 +11,9 @@
 #' @param boot_ages switch for resampling ages (default = FALSE)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param sex_samples change sample sizes (default = NULL)
+#' @param write_sample switch to save the "new_unsexed" data (default = FALSE)
+#' @param save name to save a file
+#' @param region region will create a folder and place results in said folder
 #'
 #' @return
 #' @export swo
@@ -18,9 +21,9 @@
 #' @examples
 #' swo(lfreq, specimen, cpue, strata_data, yrs = 2015, boot_hauls = TRUE,
 #'     boot_lengths = TRUE, length_samples = 100)
-swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL, 
-                strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
-                boot_ages = FALSE, length_samples = NULL, sex_samples = NULL) {
+swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
+                strata, boot_hauls, boot_lengths, 
+                boot_ages, length_samples, sex_samples, write_sample, save, region) {
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
@@ -83,13 +86,15 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
   
   # sample lengths ----
   if(!is.null(length_samples)) {
-    sample(.lfreq_un, samples = length_samples) -> .lfreq_un
+    sample(.lfreq_un, samples = length_samples, write_sample = write_sample, 
+           save = save, region = region) -> .lfreq_un
   } 
   
   
   # sample sex ----  
   if(!is.null(sex_samples)) {
-    sample(.lfreq_un, samples = sex_samples, type = 'sex') -> .lfreq_un
+    sample(.lfreq_un, samples = sex_samples, type = 'sex', 
+           write_sample = write_sample, save = save, region = region) -> .lfreq_un
   }  
   
   # length comp ----
@@ -105,10 +110,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
   
   # age population ----
   apop(.lpop, .agedat) -> .apop
-  
-  
-  
-  
+ 
   list(age = .apop, length = .lpop)
    
 }

@@ -4,7 +4,7 @@
 \alias{sample}
 \title{resample length or sex data}
 \usage{
-sample(lfreq_un, samples, type = "length")
+sample(lfreq_un, samples, type = "length", write_sample, save, region)
 }
 \arguments{
 \item{lfreq_un}{expanded length frequency data}
@@ -12,6 +12,12 @@ sample(lfreq_un, samples, type = "length")
 \item{samples}{number of samples to take (default = NULL)}
 
 \item{type}{length or sex samples (default = 'length')}
+
+\item{write_sample}{switch to save the "new_unsexed" data}
+
+\item{save}{name to save a file}
+
+\item{region}{region will create a folder and place results in said folder}
 }
 \value{
 

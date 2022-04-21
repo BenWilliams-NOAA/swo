@@ -48,7 +48,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">query_data</span><span class="op">(</span><span class="va">region</span>, <span class="va">species</span>, yrs <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">afsc_user</span>, <span class="va">afsc_pwd</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">query_data</span><span class="op">(</span><span class="va">region</span>, <span class="va">species</span>, yrs <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">afsc_user</span>, <span class="va">afsc_pwd</span>, nbs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -58,11 +58,13 @@
 <dt>species</dt>
 <dd><p>species_codes e.g., c(10110, 21740)</p></dd>
 <dt>yrs</dt>
-<dd><p>minimum year to consider (default = NULL)</p></dd>
+<dd><p>minimum year to consider (default: NULL)</p></dd>
 <dt>afsc_user</dt>
 <dd><p>afsc database username</p></dd>
 <dt>afsc_pwd</dt>
 <dd><p>afsc database password</p></dd>
+<dt>nbs</dt>
+<dd><p>switch to include northern Bering Sea data (default: FALSE)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

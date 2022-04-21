@@ -9,13 +9,16 @@ swo(
   specimen_data,
   cpue_data,
   strata_data,
-  yrs = NULL,
-  strata = FALSE,
-  boot_hauls = FALSE,
-  boot_lengths = FALSE,
-  boot_ages = FALSE,
-  length_samples = NULL,
-  sex_samples = NULL
+  yrs,
+  strata,
+  boot_hauls,
+  boot_lengths,
+  boot_ages,
+  length_samples,
+  sex_samples,
+  write_sample,
+  save,
+  region
 )
 }
 \arguments{
@@ -40,6 +43,12 @@ swo(
 \item{length_samples}{change sample sizes (default = NULL)}
 
 \item{sex_samples}{change sample sizes (default = NULL)}
+
+\item{write_sample}{switch to save the "new_unsexed" data (default = FALSE)}
+
+\item{save}{name to save a file}
+
+\item{region}{region will create a folder and place results in said folder}
 }
 \value{
 

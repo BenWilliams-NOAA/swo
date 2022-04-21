@@ -4,18 +4,20 @@
 \alias{query_data}
 \title{query racebase}
 \usage{
-query_data(region, species, yrs = NULL, afsc_user, afsc_pwd)
+query_data(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = FALSE)
 }
 \arguments{
 \item{region}{specific region for data ('GOA', 'AI')}
 
 \item{species}{species_codes e.g., c(10110, 21740)}
 
-\item{yrs}{minimum year to consider (default = NULL)}
+\item{yrs}{minimum year to consider (default: NULL)}
 
 \item{afsc_user}{afsc database username}
 
 \item{afsc_pwd}{afsc database password}
+
+\item{nbs}{switch to include northern Bering Sea data (default: FALSE)}
 }
 \value{
 
