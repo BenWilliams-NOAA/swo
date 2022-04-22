@@ -44,26 +44,28 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
       tidytable::bind_rows.(.new_sexed, .new_unsexed) 
     
   } else {
-    lfreq_un %>%
-      tidytable::filter.(sex != 3) %>%
-      tidytable::mutate.(id = .I) %>%
-      tidytable::mutate.(n = .N, 
-                         .by = c(year, species_code, stratum, hauljoin, sex)) -> .inter
     
-    # sample by sample size
-    .inter %>%
-      dplyr::group_by(year, species_code, stratum, hauljoin, sex) %>%
-      dplyr::sample_n(if(n > samples) samples else n) -> .new_sexed
-    
-    .inter %>%
-      tidytable::anti_join.(.new_sexed, by = "id") %>%
-      tidytable::mutate.(sex = 3) -> .new_unsexed
-    
-    if(isTRUE(write_sample)){
-      .new_unsexed %>% 
-        dplyr::group_by(year, species_code, stratum, hauljoin) %>%
-        dplyr::count() %>% 
-        vroom::vroom_write(here::here("output", region, paste0(save, "_removed_sex.csv")), delim = ",")
+    # this part doesn't do what it should so ignore for now.
+    # lfreq_un %>%
+    #   tidytable::filter.(sex != 3) %>%
+    #   tidytable::mutate.(id = .I) %>%
+    #   tidytable::mutate.(n = .N, 
+    #                      .by = c(year, species_code, stratum, hauljoin, sex)) -> .inter
+    # 
+    # # sample by sample size
+    # .inter %>%
+    #   dplyr::group_by(year, species_code, stratum, hauljoin, sex) %>%
+    #   dplyr::sample_n(if(n > samples) samples else n) -> .new_sexed
+    # 
+    # .inter %>%
+    #   tidytable::anti_join.(.new_sexed, by = "id") %>%
+    #   tidytable::mutate.(sex = 3) -> .new_unsexed
+    # 
+    # if(isTRUE(write_sample)){
+    #   .new_unsexed %>% 
+    #     dplyr::group_by(year, species_code, stratum, hauljoin) %>%
+    #     dplyr::count() %>% 
+    #     vroom::vroom_write(here::here("output", region, paste0(save, "_removed_sex.csv")), delim = ",")
     }
     
     
