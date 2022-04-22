@@ -23,7 +23,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
   # create folder
   if (!dir.exists("data")) {dir.create("data")}
   
-  if(region == 'BS' & (is.null(nbs))){
+  if(region == 'BS' & (isFALSE(nbs))){
     message("you are excluding the northern Bering Sea data, change to nbs = TRUE if needed")
   }
   
