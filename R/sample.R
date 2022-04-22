@@ -76,5 +76,5 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
                          n = .N, .by = c(year, species_code, stratum, hauljoin, sex)) %>%
       tidytable::bind_rows.(.new_sexed, .new_unsexed) 
     
-  }
+  
 }
