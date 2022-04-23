@@ -57,7 +57,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
   
   # write out comp data
-  if(isTRUE(write_comp)){
+  if(isTRUE(write_comp)) {
     r_age %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
     vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age.csv")), delim = ",")
@@ -66,7 +66,11 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
       vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size.csv")), delim = ",")
   }
   
-  
+  if(isTRUE(write_sample)) {
+    do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$unsexed %>%
+      tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
+      vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
+  }
   # ess of bootstrapped age/length
   r_age %>%
     tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga)) %>%

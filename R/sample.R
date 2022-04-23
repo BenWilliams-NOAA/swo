@@ -29,19 +29,27 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
       tidytable::anti_join.(.new_sexed, by = "id") %>%
       tidytable::mutate.(sex = 3) -> .new_unsexed
     
-    if(isTRUE(write_sample)){
-      .new_unsexed %>% 
-        dplyr::group_by(year, species_code, stratum, hauljoin) %>%
-        dplyr::count() %>% 
-        vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
-    }
+    # if(isTRUE(write_sample)){
+    #   .new_unsexed %>% 
+    #     dplyr::group_by(year, species_code, stratum, hauljoin) %>%
+    #     dplyr::count() %>% 
+    #     vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
+    # }
     
     # rejoin to original unsexed
     lfreq_un %>%
       tidytable::filter.(sex == 3) %>%
       tidytable::mutate.(id = .I,
                          n = .N, .by = c(year, species_code, stratum, hauljoin)) %>%
-      tidytable::bind_rows.(.new_sexed, .new_unsexed) 
+      tidytable::bind_rows.(.new_sexed, .new_unsexed)  -> .out
+    
+    if(isTRUE(write_sample)){
+      .new_unsexed %>% 
+        dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
+        dplyr::count(name = 'frequency') -> new_unsexed
+      .out = list(data = .out, unsexed = new_unsexed)
+    } 
+    .out
     
   } else {
     
@@ -69,12 +77,12 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
     }
     
     
-    # rejoin to original unsexed
-    lfreq_un %>%
-      tidytable::filter.(sex == 3) %>%
-      tidytable::mutate.(id = .I,
-                         n = .N, .by = c(year, species_code, stratum, hauljoin, sex)) %>%
-      tidytable::bind_rows.(.new_sexed, .new_unsexed) 
+    # # rejoin to original unsexed
+    # lfreq_un %>%
+    #   tidytable::filter.(sex == 3) %>%
+    #   tidytable::mutate.(id = .I,
+    #                      n = .N, .by = c(year, species_code, stratum, hauljoin, sex)) %>%
+    #   tidytable::bind_rows.(.new_sexed, .new_unsexed) 
     
   
 }

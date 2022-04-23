@@ -87,16 +87,18 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # sample lengths ----
   if(!is.null(length_samples)) {
     sample(.lfreq_un, samples = length_samples, write_sample = write_sample, 
-           save = save, region = region) -> .lfreq_un
+           save = save, region = region) -> .out
+      
+      .lfreq_un <- .out$data
   } 
   
   
   # sample sex ----  
-  if(!is.null(sex_samples)) {
-    sample(.lfreq_un, samples = sex_samples, type = 'sex', 
-           write_sample = write_sample, save = save, region = region) -> .lfreq_un
-  }  
-  
+  # if(!is.null(sex_samples)) {
+  #   sample(.lfreq_un, samples = sex_samples, type = 'sex', 
+  #          write_sample = write_sample, save = save, region = region) -> .lfreq_un
+  # }  
+  # 
   # length comp ----
   lcomp(.lfreq_un) -> .lcomp
   
@@ -111,6 +113,6 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # age population ----
   apop(.lpop, .agedat) -> .apop
  
-  list(age = .apop, length = .lpop)
+  list(age = .apop, length = .lpop, unsexed = .out$unsexed)
    
 }
