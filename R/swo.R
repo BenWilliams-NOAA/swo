@@ -59,7 +59,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
     tidytable::uncount.(frequency) -> .lfreq_un
   
   if(!is.null(reduce_lengths)) {
-    l_reduce(.lfreq_un, length_reduce) -> .lfreq_un
+    l_reduce(.lfreq_un, reduce_lengths) -> .lfreq_un
   }
   
   data.table::setDT(specimen_data) %>%
