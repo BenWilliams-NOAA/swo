@@ -49,18 +49,18 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   # run iterations
   rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, 
                                 specimen_data = specimen_data, 
-                            cpue_data = cpue_data, 
-                            strata_data = strata_data, 
-                            yrs = yrs, strata = strata, 
-                            boot_hauls = boot_hauls, 
-                            boot_lengths = boot_lengths, 
-                            boot_ages = boot_ages, 
-                            reduce_lengths = reduce_lengths, 
-                            length_samples = length_samples, 
-                            sex_samples = sex_samples, 
-                            save = save, 
-                            write_sample = write_sample, 
-                            region = region))
+                                cpue_data = cpue_data, 
+                                strata_data = strata_data, 
+                                yrs = yrs, strata = strata, 
+                                boot_hauls = boot_hauls, 
+                                boot_lengths = boot_lengths, 
+                                boot_ages = boot_ages, 
+                                reduce_lengths = reduce_lengths, 
+                                length_samples = length_samples, 
+                                sex_samples = sex_samples, 
+                                save = save, 
+                                write_sample = write_sample, 
+                                region = region))
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length

@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-sample <- function(lfreq_un, samples, type = 'length', write_sample, save, region) {
+sample <- function(lfreq_un, samples, type = 'length', save, region) {
   
   if(type == 'length'){
     lfreq_un %>%
@@ -39,15 +39,15 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
       tidytable::filter.(sex == 3) %>%
       tidytable::mutate.(id = .I,
                          n = .N, .by = c(year, species_code, stratum, hauljoin)) %>%
-      tidytable::bind_rows.(.new_sexed, .new_unsexed)  -> .out
+      tidytable::bind_rows.(.new_sexed, .new_unsexed)  -> .data
     
-    if(isTRUE(write_sample)){
+
       .new_unsexed %>% 
         dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
-        dplyr::count(name = 'frequency') -> new_unsexed
-      .out = list(data = .out, unsexed = new_unsexed)
-    } 
-    .out
+        dplyr::count(name = 'frequency') -> .new_unsexed
+      
+      .out = list(data = .data, unsexed = .new_unsexed)
+   
     
   } else {
     
