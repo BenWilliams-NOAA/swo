@@ -10,6 +10,7 @@
 #' @param boot_hauls resample hauls w/replacement (default = FALSE)
 #' @param boot_lengths resample lengths w/replacement (default = FALSE)
 #' @param boot_ages resample ages w/replacement (default = FALSE)
+#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
 #' @param length_samples sample size by length (default = NULL)
 #' @param sex_samples  sample size by sex (default = NULL)
 #' @param save name to save a file
@@ -22,7 +23,7 @@
 #' @examples
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                     yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
-                    boot_ages = FALSE, length_samples = NULL, sex_samples = NULL, save = NULL, 
+                    boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
                     write_comp = FALSE, write_sample = FALSE, region = NULL){
   
   if(isTRUE(write_comp) & is.null(save) | is.null(save)){
@@ -39,19 +40,27 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
             boot_hauls = FALSE, boot_lengths = FALSE, 
-            boot_ages = FALSE, length_samples = NULL, 
+            boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, 
             sex_samples = NULL, save = NULL, 
             write_sample = FALSE, region = NULL)
   oga <- og$age
   ogl <- og$length
   
   # run iterations
-  rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
-                            cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata, 
-                            boot_hauls = boot_hauls, boot_lengths = boot_lengths, 
-                            boot_ages = boot_ages, length_samples = length_samples, 
-                            sex_samples = sex_samples, save = save, 
-                            write_sample = write_sample, region = region))
+  rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, 
+                                specimen_data = specimen_data, 
+                            cpue_data = cpue_data, 
+                            strata_data = strata_data, 
+                            yrs = yrs, strata = strata, 
+                            boot_hauls = boot_hauls, 
+                            boot_lengths = boot_lengths, 
+                            boot_ages = boot_ages, 
+                            reduce_lengths = reduce_lengths, 
+                            length_samples = length_samples, 
+                            sex_samples = sex_samples, 
+                            save = save, 
+                            write_sample = write_sample, 
+                            region = region))
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length

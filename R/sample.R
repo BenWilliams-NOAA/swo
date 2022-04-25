@@ -21,9 +21,7 @@ sample <- function(lfreq_un, samples, type = 'length', write_sample, save, regio
                          .by = c(year, species_code, stratum, hauljoin)) -> .inter
     
     # sample by sample size
-    .inter %>%
-      dplyr::group_by(year, species_code, stratum, hauljoin) %>%
-      dplyr::sample_n(if(n > samples) samples else n) -> .new_sexed
+    core_samp(.inter, samples)  -> .new_sexed
     
     .inter %>%
       tidytable::anti_join.(.new_sexed, by = "id") %>%
