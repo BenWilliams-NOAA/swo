@@ -7,7 +7,7 @@
 #'
 #' @examples
 boot_age <- function(age_dat) {
-  agedat %>%
+  age_dat %>%
     tidytable:: mutate.(sex_ln_ag = paste0(sex, "-", length, "-", age)) %>%
     .[, sex_ln_ag := sex_ln_ag[sample.int(.N, .N, replace = TRUE)],
       by = c('year', 'species_code', 'hauljoin') ] %>%
