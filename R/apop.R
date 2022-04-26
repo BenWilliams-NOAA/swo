@@ -54,6 +54,7 @@ apop <- function(lpop, agedat){
       tidytable::mutate.(age_frac = age_num/sum(age_num), 
                          .by = c(year, species_code, length)) %>%
       tidytable::left_join.(.lpop_long_un) %>%
+      tidytable::drop_na.() %>% 
       tidytable::mutate.(agepop = age_frac * sizepop, 
                          .by = c(year, species_code, length)) %>%
       tidytable::mutate.(agepop = sum(agepop), 
