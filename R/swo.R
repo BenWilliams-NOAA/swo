@@ -12,9 +12,6 @@
 #' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param sex_samples change sample sizes (default = NULL)
-#' @param write_sample switch to save the "new_unsexed" data (default = FALSE)
-#' @param save name to save a file
-#' @param region region will create a folder and place results in said folder
 #'
 #' @return
 #' @export swo
@@ -24,7 +21,7 @@
 #'     boot_lengths = TRUE, length_samples = 100)
 swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
                 strata, boot_hauls, boot_lengths, boot_ages, 
-                reduce_lengths, length_samples, sex_samples, write_sample, save, region) {
+                reduce_lengths, length_samples, sex_samples) {
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
@@ -90,8 +87,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # sample lengths ----
   if(!is.null(length_samples)) {
-    sample(.lfreq_un, samples = length_samples, write_sample = write_sample, 
-           save = save, region = region) -> .out
+    sample(.lfreq_un, samples = length_samples) -> .out
       
       .lfreq_un <- .out$data
   } 
@@ -99,8 +95,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # sample sex ----  
   # if(!is.null(sex_samples)) {
-  #   sample(.lfreq_un, samples = sex_samples, type = 'sex', 
-  #          write_sample = write_sample, save = save, region = region) -> .lfreq_un
+  #   sample(.lfreq_un, samples = sex_samples, type = 'sex') -> .lfreq_un
   # }  
   # 
   # length comp ----

@@ -3,15 +3,12 @@
 #' @param lfreq_un expanded length frequency data
 #' @param samples number of samples to take (default = NULL)
 #' @param type length or sex samples (default = 'length')
-#' @param write_sample switch to save the "new_unsexed" data
-#' @param save name to save a file
-#' @param region region will create a folder and place results in said folder
 #'
 #' @return
 #' @export
 #'
 #' @examples
-sample <- function(lfreq_un, samples, type = 'length', save, region) {
+sample <- function(lfreq_un, samples, type = 'length') {
   
   if(type == 'length'){
     lfreq_un %>%

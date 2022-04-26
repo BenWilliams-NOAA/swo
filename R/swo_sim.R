@@ -15,6 +15,7 @@
 #' @param sex_samples  sample size by sex (default = NULL)
 #' @param save name to save a file
 #' @param write_comp save the intermediate age/length comps
+#' @param write_sample save the new "unsexed" default = FALSE
 #' @param region region will create a folder and place results in said folder
 #'
 #' @return
@@ -41,8 +42,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
             boot_hauls = FALSE, boot_lengths = FALSE, 
             boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, 
-            sex_samples = NULL, save = NULL, 
-            write_sample = FALSE, region = NULL)
+            sex_samples = NULL)
   oga <- og$age
   ogl <- og$length
   
@@ -57,10 +57,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
                                 boot_ages = boot_ages, 
                                 reduce_lengths = reduce_lengths, 
                                 length_samples = length_samples, 
-                                sex_samples = sex_samples, 
-                                save = save, 
-                                write_sample = write_sample, 
-                                region = region))
+                                sex_samples = sex_samples))
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
