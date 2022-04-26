@@ -17,6 +17,7 @@
 #' @param write_comp save the intermediate age/length comps
 #' @param write_sample save the new "unsexed" default = FALSE
 #' @param region region will create a folder and place results in said folder
+#' @param save_orig save the original 
 #'
 #' @return
 #' @export swo_sim
@@ -25,7 +26,7 @@
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                     yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
                     boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
-                    write_comp = FALSE, write_sample = FALSE, region = NULL){
+                    write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
   
   if(isTRUE(write_comp) & is.null(save) | is.null(save)){
     stop("have to provide a name for the file, save = ...")
@@ -46,6 +47,12 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   oga <- og$age
   ogl <- og$length
   
+  if(isTRUE(save_orig)){
+    vroom::vroom_write(oga, file = here::here("output", region, paste0(save, "_orig_age.csv")), delim = ",")
+    vroom::vroom_write(ogl, file = here::here("output", region, paste0(save, "_orig_length.csv")), delim = ",")
+  }
+  
+  
   # run iterations
   rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, 
                                 specimen_data = specimen_data, 
@@ -61,6 +68,10 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
+  
+  r_age %>%
+    tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
+    vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age.csv")), delim = ",")
   
   # write out comp data
   if(isTRUE(write_comp)) {
