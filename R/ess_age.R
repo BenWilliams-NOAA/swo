@@ -15,7 +15,7 @@ ess_age <- function(sim_data, og_data, strata = FALSE){
     stop("check your strata")
   }
   
-  if (!isFALSE(strata)) {
+  if (isTRUE(strata)) {
   og_data %>%
     tidytable::mutate.(og_m = males / sum(males),
             og_f = females / sum(females),
