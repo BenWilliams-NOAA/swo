@@ -8,14 +8,14 @@
 #' @export
 #'
 #' @examples
-ess_size <- function(sim_data, og_data, strata = NULL) {
+ess_size <- function(sim_data, og_data, strata = FALSE) {
   
-  if ("stratum" %in% names(og_data) & is.null(strata) |
-      "stratum" %in% names(sim_data) & is.null(strata)) {
+  if ("stratum" %in% names(og_data) & isFALSE(strata) |
+      "stratum" %in% names(sim_data) & isFALSE(strata)) {
     stop("check your strata")
   }
   
-  if (!is.null(strata)) {
+  if (!isFALSE(strata)) {
     og_data %>%
       tidytable::mutate.(og_m = males / sum(males),
               og_f = females / sum(females),
