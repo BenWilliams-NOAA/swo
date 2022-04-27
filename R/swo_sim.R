@@ -40,7 +40,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   
   # get original values
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
-            cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
+            cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = FALSE,
             boot_hauls = FALSE, boot_lengths = FALSE, 
             boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, 
             sex_samples = NULL)

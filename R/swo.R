@@ -28,7 +28,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # prep data ----
   # complete cases by length/sex/strata for all years
-  if(!is.null(strata)){
+  if(isFALSE(strata)){
   lfreq_data %>%
       dplyr::filter(year >= yrs) %>% 
       dplyr::group_by(species_code) %>%
