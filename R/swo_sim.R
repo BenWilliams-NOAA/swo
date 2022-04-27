@@ -83,7 +83,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
       vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size.csv")), delim = ",")
   }
   
-  if(isTRUE(write_sample)) {
+  if(isTRUE(write_sample) & !is.null(length_samples)) {
     do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$unsexed %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
       vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
