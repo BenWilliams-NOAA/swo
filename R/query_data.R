@@ -46,7 +46,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
                          delim = ',')
-  } else if(region == 'BS' & is.null(nbs)) {
+  } else if(region == 'BS' & isFALSE(nbs)) {
     
     bs = sql_read('length_freq_bs.sql')
     bs = sql_filter(x = region, sql_code = bs, flag = '-- insert region')
