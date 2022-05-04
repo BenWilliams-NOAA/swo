@@ -20,8 +20,9 @@ apop <- function(lpop, agedat){
   
   # compute resampled age pop'n for females & males
   agedat %>%
-    tidytable::summarise.(age_num = length(age),
-                          .by = c(year, species_code, sex, length, age))  %>%
+    tidytable::drop_na.() %>% 
+    dplyr::group_by(year, species_code, sex, length, age) %>%
+    dplyr::summarise(age_num = length(age))
     tidytable::mutate.(age_frac = age_num/sum(age_num), 
                        .by = c(year, species_code, sex, length)) %>%
     tidytable::left_join.(.lpop_long) %>%
@@ -37,6 +38,7 @@ apop <- function(lpop, agedat){
   
   # compute resampled age pop'n for unsexed (og rule is if you have a year with unsexed specimen data you use all the specimen data)
   agedat %>%
+    tidytable::drop_na.() %>% 
     dplyr::group_by(year, species_code) %>%
     dplyr::count(sex) %>%
     tidytable::filter.(sex == 3) %>%
@@ -48,9 +50,10 @@ apop <- function(lpop, agedat){
     
     agedat %>%
       tidytable::left_join.(.sex_cnt_ag) %>%
+      tidytable::drop_na.() %>% 
       tidytable::filter.(n > 0) %>%
-      tidytable::summarise.(age_num = length(age),
-                            .by = c(year, species_code, length, age)) %>%
+      dplyr::group_by(year, species_code, length, age) %>%
+      dplyr::summarise(age_num = length(age)) %>% 
       tidytable::mutate.(age_frac = age_num/sum(age_num), 
                          .by = c(year, species_code, length)) %>%
       tidytable::left_join.(.lpop_long_un) %>%
