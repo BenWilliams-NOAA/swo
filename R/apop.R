@@ -22,7 +22,7 @@ apop <- function(lpop, agedat){
   agedat %>%
     tidytable::drop_na.() %>% 
     dplyr::group_by(year, species_code, sex, length, age) %>%
-    dplyr::summarise(age_num = length(age))
+    dplyr::summarise(age_num = length(age)) %>% 
     tidytable::mutate.(age_frac = age_num/sum(age_num), 
                        .by = c(year, species_code, sex, length)) %>%
     tidytable::left_join.(.lpop_long) %>%
