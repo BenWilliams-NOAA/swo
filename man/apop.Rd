@@ -11,9 +11,6 @@ apop(lpop, agedat)
 
 \item{agedat}{age dataframe}
 }
-\value{
-
-}
 \description{
 population at age
 }

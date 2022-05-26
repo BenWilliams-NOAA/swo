@@ -14,11 +14,9 @@ swo(
   boot_hauls,
   boot_lengths,
   boot_ages,
+  reduce_lengths,
   length_samples,
-  sex_samples,
-  write_sample,
-  save,
-  region
+  sex_samples
 )
 }
 \arguments{
@@ -40,18 +38,11 @@ swo(
 
 \item{boot_ages}{switch for resampling ages (default = FALSE)}
 
+\item{reduce_lengths}{reduce the total number of lengths used in the analysis (default = NULL)}
+
 \item{length_samples}{change sample sizes (default = NULL)}
 
 \item{sex_samples}{change sample sizes (default = NULL)}
-
-\item{write_sample}{switch to save the "new_unsexed" data (default = FALSE)}
-
-\item{save}{name to save a file}
-
-\item{region}{region will create a folder and place results in said folder}
-}
-\value{
-
 }
 \description{
 primary survey workload optimization function

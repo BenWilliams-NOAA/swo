@@ -4,7 +4,7 @@
 \alias{ess_size}
 \title{calculate effective sample size for length comps}
 \usage{
-ess_size(sim_data, og_data, strata = NULL)
+ess_size(sim_data, og_data, ...)
 }
 \arguments{
 \item{sim_data}{list of abundance by length data}
@@ -12,9 +12,6 @@ ess_size(sim_data, og_data, strata = NULL)
 \item{og_data}{original abundance by length data (single list)}
 
 \item{strata}{switch to perform analysis at regional or strata level (default = NULL)}
-}
-\value{
-
 }
 \description{
 calculate effective sample size for length comps

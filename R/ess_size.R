@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-ess_size <- function(sim_data, og_data, strata = FALSE) {
+ess_size <- function(sim_data, og_data, ...) {
   
   if ("stratum" %in% names(og_data) & isFALSE(strata) |
       "stratum" %in% names(sim_data) & isFALSE(strata)) {

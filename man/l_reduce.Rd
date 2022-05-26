@@ -4,7 +4,7 @@
 \alias{l_reduce}
 \title{reduce total number of lengths}
 \usage{
-l_reduce(data, samples, write_sample, region, save)
+l_reduce(data, samples, grp)
 }
 \arguments{
 \item{data}{lfreq dataframe}
@@ -16,9 +16,6 @@ l_reduce(data, samples, write_sample, region, save)
 \item{region}{region being sampled}
 
 \item{save}{name to save}
-}
-\value{
-
 }
 \description{
 reduce total number of lengths

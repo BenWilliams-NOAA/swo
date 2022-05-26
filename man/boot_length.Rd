@@ -9,9 +9,6 @@ boot_length(lfreq_un)
 \arguments{
 \item{lfreq_un}{expanded length frequency data}
 }
-\value{
-
-}
 \description{
 resample length data w/replacement
 }
