@@ -43,6 +43,9 @@
     <loc>/reference/lpop.html</loc>
   </url>
   <url>
+    <loc>/reference/l_reduce.html</loc>
+  </url>
+  <url>
     <loc>/reference/pipe.html</loc>
   </url>
   <url>
@@ -56,5 +59,8 @@
   </url>
   <url>
     <loc>/reference/swo_sim.html</loc>
+  </url>
+  <url>
+    <loc>/reference/swo_sim_goa_rebs.html</loc>
   </url>
 </urlset>
