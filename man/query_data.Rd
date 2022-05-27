@@ -19,9 +19,6 @@ query_data(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = FALSE)
 
 \item{nbs}{switch to include northern Bering Sea data (default: FALSE)}
 }
-\value{
-
-}
 \description{
 query racebase
 }

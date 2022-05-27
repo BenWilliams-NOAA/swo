@@ -13,9 +13,6 @@ lpop(lcomp, cpue, lngs)
 
 \item{lngs}{complete lengths by year}
 }
-\value{
-
-}
 \description{
 population at length
 }

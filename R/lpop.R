@@ -29,38 +29,56 @@ lpop <- function(lcomp, cpue, lngs) {
   if(nrow(.no_length) == 0){
     lcomp %>%
       tidytable::left_join.(.pop) %>%
-      tidytable::mutate.(sz_pop = round(comp * abund, 0)) -> .temp
+      tidytable::mutate.(sz_pop = round(comp * abund, 0)) %>% 
+      tidytable::filter.(!is.na(sex)) -> .temp
   } else {
     .no_length %>%
       tidytable::left_join.(.unk) %>%
       tidytable::select.(year, species_code, stratum, hauljoin, sex, length, comp) %>%
       tidytable::bind_rows.(lcomp) %>%
       tidytable::left_join.(.pop) %>%
-      tidytable::mutate.(sz_pop = round(comp * abund, 0)) -> .temp
+      tidytable::mutate.(sz_pop = round(comp * abund, 0)) %>% 
+      tidytable::filter.(!is.na(sex)) -> .temp
   }
   
   .temp %>%
-    dplyr::group_by(year, species_code) %>%
-    dplyr::count(sex) %>%
     tidytable::filter.(sex == 3) %>%
-    tidytable::select.(year, species_code, n) -> .sex_cnt_sz
+    tidytable::count.(c(year, species_code), name = 'n') -> .sex_cnt_sz
   
-  if(length(.sex_cnt_sz$n)>0){
+  if("stratum" %in% names(lngs)){
+    .temp %>%
+      tidytable::summarise.(abund = sum(sz_pop, na.rm = T), 
+                            .by = c(year, species_code, stratum, length, sex)) %>%
+      tidytable::pivot_wider.(names_from = sex, values_from = abund) %>%
+      tidytable::left_join.(lngs, .) %>%
+      tidytable::mutate.(across.(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na.(.x, 0))) %>%
+      tidytable::drop_na.() -> .temp2
+    
+    if(length(.sex_cnt_sz$n)>0){
+      .temp2 %>% 
+        tidytable::select.(year, species_code, stratum, length, males = `1`, females = `2`, unsexed = `3`) 
+    } else{
+      .temp2 %>% 
+        tidytable::select.(year, species_code, stratum, length, males = `1`, females = `2`) %>%
+        tidytable::mutate.(unsexed = 0) 
+    }
+  } else {
     .temp %>%
       tidytable::summarise.(abund = sum(sz_pop, na.rm = T), 
                             .by = c(year, species_code, length, sex)) %>%
       tidytable::pivot_wider.(names_from = sex, values_from = abund) %>%
       tidytable::left_join.(lngs, .) %>%
       tidytable::mutate.(across.(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na.(.x, 0))) %>%
-      tidytable::select.(year, species_code, length, males = `1`, females = `2`, unsexed = `3`) 
-  } else{
-    .temp %>%
-      tidytable::summarise.(abund = sum(sz_pop, na.rm = T), .by = c(year, species_code, length, sex)) %>%
-      tidytable::pivot_wider.(names_from = sex, values_from = abund) %>%
-      tidytable::left_join.(lngs, .) %>%
-      tidytable::mutate.(across.(.cols = c(`1`, `2`), ~tidytable::replace_na.(.x, 0))) %>%
-      tidytable::select.(year, species_code, length, males = `1`, females = `2`) %>%
-      tidytable::mutate.(unsexed = 0) 
+      tidytable::drop_na.() -> .temp2
+    
+    if(length(.sex_cnt_sz$n)>0){
+      .temp2 %>% 
+        tidytable::select.(year, species_code, length, males = `1`, females = `2`, unsexed = `3`) 
+    } else{
+      .temp2 %>% 
+        tidytable::select.(year, species_code, length, males = `1`, females = `2`) %>%
+        tidytable::mutate.(unsexed = 0) 
+    }
   }
   
 }

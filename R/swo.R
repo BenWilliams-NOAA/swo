@@ -25,18 +25,20 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
-  
+ 
   # prep data ----
   # complete cases by length/sex/strata for all years
   if(isTRUE(strata)){
-  lfreq_data %>%
-      dplyr::filter(year >= yrs) %>% 
+    lfreq_data %>%
+      tidytable::filter.(year >= yrs) %>% 
+      tibble::as_tibble() %>% 
       dplyr::group_by(species_code) %>%
       dplyr::distinct(length, year, stratum) %>%
       tidyr::expand(length, year, stratum) -> .lngs
   } else {
     lfreq_data %>%
-      dplyr::filter(year >= yrs) %>% 
+      tidytable::filter.(year >= yrs) %>% 
+      tibble::as_tibble() %>% 
       dplyr::group_by(species_code) %>%
       dplyr::distinct(length, year) %>%
       tidyr::expand(length, year) -> .lngs
@@ -110,7 +112,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   }
   
   # age population ----
-  apop(.lpop, .agedat) -> .apop
+  apop(.lpop, .agedat, strata = strata) -> .apop
  
   if(!is.null(length_samples)) {
     list(age = .apop, length = .lpop, unsexed = .out$unsexed)
