@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-ess_age <- function(sim_data, og_data, strata = FALSE){
+ess_age <- function(sim_data, og_data, strata){
   
   if ("stratum" %in% names(og_data) & isFALSE(strata) |
       "stratum" %in% names(sim_data) & isFALSE(strata)) {
@@ -18,10 +18,10 @@ ess_age <- function(sim_data, og_data, strata = FALSE){
   if (isTRUE(strata)) {
   og_data %>%
     tidytable::mutate.(og_m = males / sum(males),
-            og_f = females / sum(females),
-            og_t = (males + females + unsexed) / 
-              (sum(males) + sum(females) + sum(unsexed)),
-            .by = c(year, species_code, stratum)) %>%
+                       og_f = females / sum(females),
+                       og_t = (males + females + unsexed) / 
+                              (sum(males) + sum(females) + sum(unsexed)),
+                      .by = c(year, species_code, stratum)) %>%
     tidytable::select.(year, species_code, stratum, age, og_m, og_f, og_t) -> og_prop
   
   sim_data %>%

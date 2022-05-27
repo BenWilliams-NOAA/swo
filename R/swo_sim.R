@@ -96,7 +96,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   }
   # ess of bootstrapped age/length
   r_age %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga)) %>%
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age
   r_length %>%
     tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl, strata = strata)) %>%

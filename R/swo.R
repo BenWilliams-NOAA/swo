@@ -112,7 +112,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   }
   
   # age population ----
-  apop(.lpop, .agedat) -> .apop
+  apop(.lpop, .agedat, strata = strata) -> .apop
  
   if(!is.null(length_samples)) {
     list(age = .apop, length = .lpop, unsexed = .out$unsexed)
