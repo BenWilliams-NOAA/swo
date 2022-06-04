@@ -4,7 +4,7 @@
 \alias{ess_size}
 \title{calculate effective sample size for length comps}
 \usage{
-ess_size(sim_data, og_data, ...)
+ess_size(sim_data, og_data, strata)
 }
 \arguments{
 \item{sim_data}{list of abundance by length data}

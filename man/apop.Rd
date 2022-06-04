@@ -4,7 +4,7 @@
 \alias{apop}
 \title{population at age}
 \usage{
-apop(lpop, agedat)
+apop(lpop, agedat, strata)
 }
 \arguments{
 \item{lpop}{length population data}
