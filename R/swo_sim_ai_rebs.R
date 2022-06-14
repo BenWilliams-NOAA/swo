@@ -1,4 +1,4 @@
-#' replicate swo function for goa rebs stock complex
+#' replicate swo function for ai rebs stock complex
 #'
 #' @param iters number of iterations (500 recommended)
 #' @param lfreq_data  input dataframe
@@ -20,12 +20,12 @@
 #' @param save_orig save the original 
 #'
 #' @return
-#' @export swo_sim_goa_rebs
+#' @export swo_sim_ai_rebs
 #'
 #' @examples
 #' 
 #'
-swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
+swo_sim_ai_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                               yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
                               boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
                               write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
@@ -41,7 +41,7 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   }
   
   # get original values
-  og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
+  og <- swo_ai_rebs(lfreq_data = lfreq_data, specimen_data = specimen_data, 
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = FALSE,
             boot_hauls = FALSE, boot_lengths = FALSE, 
             boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, 
@@ -67,7 +67,7 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   }
   
   # run iterations
-  rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, 
+  rr <- purrr::rerun(iters, swo_ai_rebs(lfreq_data = lfreq_data, 
                                 specimen_data = specimen_data, 
                                 cpue_data = cpue_data, 
                                 strata_data = strata_data, 
@@ -117,11 +117,11 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   
   # ess of bootstrapped age/length (for complex as whole)
   r_age_cmplx %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_c)) %>% 
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_c, strata = FALSE)) %>% 
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age
   
   r_length_cmplx %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_c)) %>%
+    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_c, strata = FALSE)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size
   
   if(!is.null(save)){
