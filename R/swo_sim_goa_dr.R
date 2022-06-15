@@ -1,4 +1,4 @@
-#' replicate swo function for goa rebs stock complex
+#' replicate swo function for goa dusky rockfish
 #'
 #' @param iters number of iterations (500 recommended)
 #' @param lfreq_data  input dataframe
@@ -20,12 +20,12 @@
 #' @param save_orig save the original 
 #'
 #' @return
-#' @export swo_sim_goa_rebs
+#' @export swo_sim_goa_dr
 #'
 #' @examples
 #' 
 #'
-swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
+swo_sim_goa_dr <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                               yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
                               boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
                               write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
@@ -40,6 +40,18 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
     dir.create(here::here('output', region), recursive = TRUE)
   }
   
+  # subset data to goa dusky rockfish species codes
+  goa_dr <- c(30150, 30152)
+  
+  lfreq_data %>% 
+    tidytable::filter.(species_code %in% goa_dr) -> lfreq_data
+  
+  specimen_data %>% 
+    tidytable::filter.(species_code %in% goa_dr) -> specimen_data
+  
+  cpue_data %>% 
+    tidytable::filter.(species_code %in% goa_dr) -> cpue_data
+  
   # get original values
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = FALSE,
@@ -52,18 +64,18 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
                           females = sum(females),
                           unsexed = sum(unsexed),
                           .by = c(year, age)) %>% 
-    tidytable::mutate.(species_code = "REBS") -> oga_c
+    tidytable::mutate.(species_code = "DR") -> oga_c
   ogl <- og$length
   ogl %>% 
     tidytable::summarize.(males = sum(males),
                           females = sum(females),
                           unsexed = sum(unsexed),
                           .by = c(year, length)) %>% 
-    tidytable::mutate.(species_code = "REBS") -> ogl_c
+    tidytable::mutate.(species_code = "DR") -> ogl_c
   
   if(isTRUE(save_orig)){
-    vroom::vroom_write(oga, file = here::here("output", region, paste0(save, "_orig_age_rebs.csv")), delim = ",")
-    vroom::vroom_write(ogl, file = here::here("output", region, paste0(save, "_orig_length_rebs.csv")), delim = ",")
+    vroom::vroom_write(oga, file = here::here("output", region, paste0(save, "_orig_age_dr.csv")), delim = ",")
+    vroom::vroom_write(ogl, file = here::here("output", region, paste0(save, "_orig_length_dr.csv")), delim = ",")
   }
   
   # run iterations
@@ -86,7 +98,7 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
                           females = sum(females),
                           unsexed = sum(unsexed),
                           .by = c(sim, year, age)) %>% 
-    tidytable::mutate.(species_code = "REBS") %>% 
+    tidytable::mutate.(species_code = "DR") %>% 
     split(., .[,'sim']) -> r_age_cmplx
   
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
@@ -96,23 +108,23 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
                           females = sum(females),
                           unsexed = sum(unsexed),
                           .by = c(sim, year, length)) %>% 
-    tidytable::mutate.(species_code = "REBS") %>% 
+    tidytable::mutate.(species_code = "DR") %>% 
     split(., .[,'sim']) -> r_length_cmplx
   
   # write out comp data (species-specific)
   if(isTRUE(write_comp)) {
     r_age %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
-      vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age_rebs.csv")), delim = ",")
+      vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age_dr.csv")), delim = ",")
     r_length %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
-      vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size_rebs.csv")), delim = ",")
+      vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size_dr.csv")), delim = ",")
   }
   
   if(isTRUE(write_sample) & !is.null(length_samples)) {
     do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$unsexed %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
-      vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length_rebs.csv")), delim = ",")
+      vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length_dr.csv")), delim = ",")
   }
   
   # ess of bootstrapped age/length (for complex as whole)
@@ -126,10 +138,10 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   
   if(!is.null(save)){
     vroom::vroom_write(ess_age, 
-                       here::here("output", region, paste0(save, "_ess_ag_rebs.csv")), 
+                       here::here("output", region, paste0(save, "_ess_ag_dr.csv")), 
                        delim = ",")
     vroom::vroom_write(ess_size, 
-                       here::here("output", region, paste0(save, "_ess_sz_rebs.csv")), 
+                       here::here("output", region, paste0(save, "_ess_sz_dr.csv")), 
                        delim = ",")
   }
   
