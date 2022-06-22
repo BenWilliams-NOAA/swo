@@ -2,5 +2,5 @@ SELECT
     survey,
     stratum,
     area
-FROM HAEHNR.nbs_strata
+FROM HAEHNR.nbs_stratum
 
