@@ -91,7 +91,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("specimen_", tolower(region), ".csv")), 
                          delim = ',')
-  } else if(region == 'BS' & is.null(nbs)) {
+  } else if(region == 'BS' & isFALSE(nbs)) {
     spbs = sql_read('specimen_bs.sql')
     spbs = sql_filter(x = region, sql_code = spbs, flag = '-- insert region')
     spbs = sql_filter(sql_precode = "IN", x = species, sql_code = spbs, flag = '-- insert species')
@@ -135,7 +135,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("cpue_", tolower(region), ".csv")), 
                          delim = ',')
-  } else if(region == 'BS' & is.null(nbs)) {
+  } else if(region == 'BS' & isFALSE(nbs)) {
     cpbs = sql_read('cpue_BS.sql')
     cpbs = sql_add(paste0('HAEHNR', '.EBSSHELF_CPUE'), cpbs)
     cpbs = sql_filter(sql_precode = "IN", x = species, sql_code = cpbs, flag = '-- insert species')
@@ -175,7 +175,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("strata_", tolower(region), ".csv")), 
                          delim = ',')
-  } else if(region == 'BS' & is.null(nbs)) {
+  } else if(region == 'BS' & isFALSE(nbs)) {
     stbs = sql_read('strata_bs.sql')
   
     sql_run(afsc, stbs) %>% 
@@ -184,8 +184,8 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
                          here::here('data', paste0("strata_", tolower(region), ".csv")), 
                          delim = ',')
    } else {
-      stbs = sql_read('strata_BS.sql')
-      stnbs = sql_read('strata_NBS.sql')
+      stbs = sql_read('strata_bs.sql')
+      stnbs = sql_read('strata_nbs.sql')
       
       sql_run(afsc, stbs) %>% 
         tidytable::bind_rows.(sql_run(afsc, stnbs)) %>% 
@@ -211,7 +211,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
                          delim = ',')
-  }  else if(region == 'BS' & is.null(nbs)) {
+  }  else if(region == 'BS' & isFALSE(nbs) {
     rpbs = sql_read('race_pop_bs.sql')
     rpbs = sql_filter(sql_precode = 'IN', sql_code = rpbs,
                       x = species, 
