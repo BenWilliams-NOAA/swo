@@ -117,11 +117,11 @@ swo_sim_ai_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, str
   
   # ess of bootstrapped age/length (for complex as whole)
   r_age_cmplx %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_c, strata = FALSE)) %>% 
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_c, strata = strata)) %>% 
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age
   
   r_length_cmplx %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_c, strata = FALSE)) %>%
+    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_c, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size
   
   if(!is.null(save)){
