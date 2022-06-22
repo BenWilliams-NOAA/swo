@@ -211,7 +211,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
                          delim = ',')
-  }  else if(region == 'BS' & isFALSE(nbs) {
+  }  else if(region == 'BS' & isFALSE(nbs)) {
     rpbs = sql_read('race_pop_bs.sql')
     rpbs = sql_filter(sql_precode = 'IN', sql_code = rpbs,
                       x = species, 
