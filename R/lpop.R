@@ -73,7 +73,7 @@ lpop <- function(lcomp, cpue, lngs) {
       tidytable::drop_na.() %>% 
         tidytable::select.(year, species_code, length, males = `1`, females = `2`, unsexed = `3`) 
     } else{
-      temp %>%
+      .temp %>%
       tidytable::summarise.(abund = sum(sz_pop, na.rm = T), 
                             .by = c(year, species_code, length, sex)) %>%
       tidytable::pivot_wider.(names_from = sex, values_from = abund) %>%
