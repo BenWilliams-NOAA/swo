@@ -1,4 +1,4 @@
-#' replicate swo function for spatially-explicit iss for western/central and eastern gulf subregions
+#' replicate swo function for spatially-explicit iss for western-central and eastern gulf subregions
 #'
 #' @param iters number of iterations (500 recommended)
 #' @param lfreq_data  input dataframe
@@ -215,19 +215,19 @@ swo_sim_goa_wc_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   
   # ess of bootstrapped age/length by subregion
   r_age_wc %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_wc, strata = FALSE)) %>% 
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_wc, strata = strata)) %>% 
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age_wc
   
   r_length_wc %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_wc, strata = FALSE)) %>%
+    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_wc, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size_wc
   
   r_age_e %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_e, strata = FALSE)) %>% 
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga_e, strata = strata)) %>% 
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age_e
   
   r_length_e %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_e, strata = FALSE)) %>%
+    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl_e, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size_e
   
   ess_age_wc %>% 
