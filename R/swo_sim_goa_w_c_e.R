@@ -315,7 +315,7 @@ swo_sim_goa_w_c_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, s
   ess_size_w %>% 
     tidytable::mutate.(region = "W") -> .ess_size_w
   ess_size_c %>% 
-    tidytable::mutate.(region = "W") -> .ess_size_c
+    tidytable::mutate.(region = "C") -> .ess_size_c
   ess_size_e %>% 
     tidytable::mutate.(region = "E") %>% 
     tidytable::bind_rows.(.ess_size_w, .ess_size_c) -> ess_size
