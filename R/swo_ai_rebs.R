@@ -106,7 +106,7 @@ swo_ai_rebs <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
     tidytable::mutate.(species_code = "REBS") -> .lpop
   
   # randomize age ----
-  if(isTRUE(boot_age)) {
+  if(isTRUE(boot_ages)) {
   boot_age(.agedat) -> .agedat
   }
   

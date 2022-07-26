@@ -75,10 +75,6 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
   
-  r_age %>%
-    tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
-    vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age.csv")), delim = ",")
-  
   # write out comp data
   if(isTRUE(write_comp)) {
     r_age %>%
