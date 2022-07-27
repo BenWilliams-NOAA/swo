@@ -25,7 +25,7 @@
 #' @examples
 #' 
 #'
-swo_sim_goa_wc_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, species, 
+swo_sim_goa_w_ce <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, species, 
                               yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
                               boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
                               write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
