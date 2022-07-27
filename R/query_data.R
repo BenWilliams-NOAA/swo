@@ -58,6 +58,19 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       vroom::vroom_write(., 
                          here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
                          delim = ',')
+    
+    bss = sql_read('length_freq_bss.sql')
+    bss = sql_filter(x = region, sql_code = bss, flag = '-- insert region')
+    bss = sql_filter(sql_precode = "IN", x = species, sql_code = bss, flag = '-- insert species')
+#    bss = sql_filter(sql_precode = ">=", x = yrs, sql_code = bss, flag = '-- insert year')
+    
+    sql_run(afsc, bss) %>% 
+      dplyr::rename_all(tolower) %>% 
+      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4)))
+      vroom::vroom_write(., 
+                         here::here('data', paste0("lfreq_slope_", tolower(region), ".csv")), 
+                         delim = ',')
+    
   } else {
     
     bs = sql_read('length_freq_bs.sql')
@@ -100,6 +113,15 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       dplyr::rename_all(tolower) %>% 
       vroom::vroom_write(., 
                          here::here('data', paste0("specimen_", tolower(region), ".csv")), 
+                         delim = ',')
+
+    spbss = sql_read('specimen_bs.sql')
+    spbss = sql_filter(x = region, sql_code = spbss, flag = '-- insert region')
+    spbss = sql_filter(sql_precode = "IN", x = species, sql_code = spbss, flag = '-- insert species')
+      dplyr::rename_all(tolower) %>% 
+      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4)))
+      vroom::vroom_write(., 
+                         here::here('data', paste0("specimen_slope", tolower(region), ".csv")), 
                          delim = ',')
     
   } else {
@@ -147,6 +169,17 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
                          here::here('data', paste0("cpue_", tolower(region), ".csv")), 
                          delim = ',')
     
+    cpbss = sql_read('cpue_BS.sql')
+    cpbss = sql_add(paste0('HOFFJ', '.CPUE_EBSSLOPE'), cpbss)
+    cpbss = sql_filter(sql_precode = "IN", x = species, sql_code = cpbss, flag = '-- insert species')
+    cpbss = sql_filter(sql_precode = ">=", x = yrs, sql_code = cpbss, flag = '-- insert year')
+    
+    sql_run(afsc, cpbss) %>% 
+      dplyr::rename_all(tolower) %>% 
+      vroom::vroom_write(., 
+                         here::here('data', paste0("cpue_slope", tolower(region), ".csv")), 
+                         delim = ',')
+        
   } else {
     cpbs = sql_read('cpue_BS.sql')
     cpbs = sql_add(paste0('HAEHNR', '.EBSSHELF_CPUE'), cpbs)
@@ -223,6 +256,19 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       dplyr::rename_all(tolower) %>% 
       vroom::vroom_write(., 
                          here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
+                         delim = ',')
+    
+    rpbss = sql_read('race_pop_bss.sql')
+    rpbss = sql_filter(x = region, sql_code = rpbss, flag = '-- insert region')
+    rpbss = sql_filter(sql_precode = "IN", x = species, sql_code = rpbss, flag = '-- insert species')
+    rpbss = sql_filter(sql_precode = ">=", x = yrs, sql_code = rpbss, flag = '-- insert year')
+    
+    sql_run(afsc, rpbss) %>% 
+      dplyr::rename_all(tolower) %>% 
+      dplyr:: group_by(year,species_code,length) %>% 
+      dplyr::summarise(males=sum(males),females=sum(females),unsexed=sum(unsexed),total=sum(total)) %>%
+      vroom::vroom_write(., 
+                         here::here('data', paste0("race_pop_slope", tolower(region), ".csv")), 
                          delim = ',')
     
   } else {
