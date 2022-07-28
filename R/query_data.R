@@ -66,7 +66,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, bss) %>% 
       dplyr::rename_all(tolower) %>% 
-      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4)))
+      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4))) %>%
       vroom::vroom_write(., 
                          here::here('data', paste0("lfreq_slope_", tolower(region), ".csv")), 
                          delim = ',')
@@ -115,11 +115,12 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
                          here::here('data', paste0("specimen_", tolower(region), ".csv")), 
                          delim = ',')
 
-    spbss = sql_read('specimen_bs.sql')
+    spbss = sql_read('specimen_bss.sql')
     spbss = sql_filter(x = region, sql_code = spbss, flag = '-- insert region')
     spbss = sql_filter(sql_precode = "IN", x = species, sql_code = spbss, flag = '-- insert species')
+    sql_run(afsc, spbss) %>% 
       dplyr::rename_all(tolower) %>% 
-      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4)))
+      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4))) %>%
       vroom::vroom_write(., 
                          here::here('data', paste0("specimen_slope", tolower(region), ".csv")), 
                          delim = ',')
