@@ -66,7 +66,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, bss) %>% 
       dplyr::rename_all(tolower) %>% 
-      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4)))
+      dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4))) %>% 
       vroom::vroom_write(., 
                          here::here('data', paste0("lfreq_slope_", tolower(region), ".csv")), 
                          delim = ',')
