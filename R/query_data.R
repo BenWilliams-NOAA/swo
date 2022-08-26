@@ -222,6 +222,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
   # race pop
   if(region!='BS') {
     rp = sql_read('race_pop.sql')
+    # length pop
     rpl = sql_add(paste0(region, '.SIZECOMP_TOTAL'), rp)
     rpl = sql_filter(sql_precode = 'IN', sql_code = rpl,
                     x = species, 
@@ -232,8 +233,23 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
   
     sql_run(afsc, rpl) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("race_lpop_", tolower(region), ".csv")), 
                          delim = ',')
+    
+    # age pop
+    rpa = sql_add(paste0(region, '.AGECOMP_TOTAL'), rp)
+    rpa = sql_filter(sql_precode = 'IN', sql_code = rpa,
+                     x = species, 
+                     flag = '-- insert species')
+    rpa = sql_filter(sql_precode = ">=", x = yrs, 
+                     sql_code = rpa, flag = '-- insert year')
+    
+    
+    sql_run(afsc, rpa) %>% 
+      dplyr::rename_all(tolower) %>% 
+      vroom::vroom_write(here::here('data', paste0("race_apop_", tolower(region), ".csv")), 
+                         delim = ',')
+    
   }  else if(region == 'BS' & isFALSE(nbs)) {
     rpbs = sql_read('race_pop_bs.sql')
     rpbs = sql_filter(sql_precode = 'IN', sql_code = rpbs,
