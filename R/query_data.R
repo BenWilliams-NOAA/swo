@@ -43,8 +43,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, lfreq) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
                          delim = ',')
   } else if(region == 'BS' & isFALSE(nbs)) {
     
@@ -55,8 +54,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, bs) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
                          delim = ',')
     
     bss = sql_read('length_freq_bss.sql')
@@ -67,8 +65,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     sql_run(afsc, bss) %>% 
       dplyr::rename_all(tolower) %>% 
       dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4))) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("lfreq_slope_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("lfreq_slope_", tolower(region), ".csv")), 
                          delim = ',')
     
   } else {
@@ -86,8 +83,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     sql_run(afsc, bs) %>% 
       tidytable::bind_rows.(sql_run(afsc, nbs)) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("lfreq_", tolower(region), ".csv")), 
                          delim = ',')
     
   }
@@ -111,8 +107,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     spbs = sql_filter(sql_precode = ">=", x = yrs, sql_code = spbs, flag = '-- insert year')
     sql_run(afsc, spbs) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("specimen_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("specimen_", tolower(region), ".csv")), 
                          delim = ',')
 
     spbss = sql_read('specimen_bss.sql')
@@ -122,8 +117,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     sql_run(afsc, spbss) %>% 
       dplyr::rename_all(tolower) %>% 
       dplyr::mutate(year=as.numeric(substr(as.character(cruise), 1, 4))) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("specimen_slope", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("specimen_slope", tolower(region), ".csv")), 
                          delim = ',')
     
   } else {
@@ -141,8 +135,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     sql_run(afsc, spbs) %>% 
       tidytable::bind_rows.(sql_run(afsc, spnbs)) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("specimen_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("specimen_", tolower(region), ".csv")), 
                          delim = ',')
     }
   
@@ -156,8 +149,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, cp) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("cpue_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("cpue_", tolower(region), ".csv")), 
                          delim = ',')
   } else if(region == 'BS' & isFALSE(nbs)) {
     cpbs = sql_read('cpue_BS.sql')
@@ -207,16 +199,14 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     st = sql_filter(x = region, sql_code = st, flag = '-- insert region')
     sql_run(afsc, st) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("strata_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("strata_", tolower(region), ".csv")), 
                          delim = ',')
   } else if(region == 'BS' & isFALSE(nbs)) {
     stbs = sql_read('strata_bs.sql')
   
     sql_run(afsc, stbs) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("strata_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("strata_", tolower(region), ".csv")), 
                          delim = ',')
    } else {
       stbs = sql_read('strata_bs.sql')
@@ -225,26 +215,24 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       sql_run(afsc, stbs) %>% 
         tidytable::bind_rows.(sql_run(afsc, stnbs)) %>% 
         dplyr::rename_all(tolower) %>% 
-        vroom::vroom_write(., 
-                           here::here('data', paste0("strata_", tolower(region), ".csv")), 
+        vroom::vroom_write(here::here('data', paste0("strata_", tolower(region), ".csv")), 
                            delim = ',')
   }
   
   # race pop
   if(region!='BS') {
     rp = sql_read('race_pop.sql')
-    rp = sql_add(paste0(region, '.SIZECOMP_TOTAL'), rp)
-    rp = sql_filter(sql_precode = 'IN', sql_code = rp,
+    rpl = sql_add(paste0(region, '.SIZECOMP_TOTAL'), rp)
+    rpl = sql_filter(sql_precode = 'IN', sql_code = rpl,
                     x = species, 
                     flag = '-- insert species')
-    rp = sql_filter(sql_precode = ">=", x = yrs, 
-                    sql_code = rp, flag = '-- insert year')
+    rpl = sql_filter(sql_precode = ">=", x = yrs, 
+                     sql_code = rpl, flag = '-- insert year')
     
   
-    sql_run(afsc, rp) %>% 
+    sql_run(afsc, rpl) %>% 
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
                          delim = ',')
   }  else if(region == 'BS' & isFALSE(nbs)) {
     rpbs = sql_read('race_pop_bs.sql')
@@ -256,8 +244,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     
     sql_run(afsc, rpbs) %>%
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
                          delim = ',')
     
     rpbss = sql_read('race_pop_bss.sql')
@@ -269,8 +256,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
       dplyr::rename_all(tolower) %>% 
       dplyr:: group_by(year,species_code,length) %>% 
       dplyr::summarise(males=sum(males),females=sum(females),unsexed=sum(unsexed),total=sum(total)) %>%
-      vroom::vroom_write(., 
-                         here::here('data', paste0("race_pop_slope", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("race_pop_slope", tolower(region), ".csv")), 
                          delim = ',')
     
   } else {
@@ -292,8 +278,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
     sql_run(afsc, rpnbs) %>% 
       tidytable::bind_rows.(sql_run(afsc, rpbs)) %>%
       dplyr::rename_all(tolower) %>% 
-      vroom::vroom_write(., 
-                         here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
+      vroom::vroom_write(here::here('data', paste0("race_pop_", tolower(region), ".csv")), 
                          delim = ',')
     
   }
@@ -303,8 +288,7 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
   .s = sql_filter(sql_precode = "IN", x = species, sql_code = .s, flag = '-- insert species')
   sql_run(afsc, .s) %>% 
     dplyr::rename_all(tolower) %>% 
-    vroom::vroom_write(., 
-                       here::here('data', paste0("species_", tolower(region), ".csv")), 
+    vroom::vroom_write(here::here('data', paste0("species_", tolower(region), ".csv")), 
                        delim = ',')
 
 DBI::dbDisconnect(afsc)
