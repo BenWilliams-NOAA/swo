@@ -14,9 +14,14 @@ lpop <- function(lcomp, cpue, lngs) {
                           .by = c(year, species_code, stratum, sex, length)) -> .unk
   
   # id hauls without lengths
-  cpue %>%
-    tidytable::filter.(!is.na(catchjoin), 
-                       !(hauljoin %in% lcomp$hauljoin)) -> .no_length
+  # see issue #35 for reasoning 
+  .cpue %>%
+    tidytable::drop_na.(catchjoin) %>% 
+    tidytable::distinct.(hauljoin, species_code)  %>% 
+    tidytable::anti_join.(.lcomp %>%
+                            tidytable::summarise.(hauljoin = unique(hauljoin),
+                                                  .by = c(species_code, stratum))) %>% 
+    tidytable::left_join.(.cpue) -> .no_length
   
   # compute population est by year, species, strata
   cpue %>%
