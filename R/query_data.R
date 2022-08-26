@@ -237,7 +237,8 @@ query_data <- function(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = F
                          delim = ',')
     
     # age pop
-    rpa = sql_add(paste0(region, '.AGECOMP_TOTAL'), rp)
+    rpa = sql_read('race_apop.sql')
+    rpa = sql_add(paste0(region, '.AGECOMP_TOTAL'), rpa)
     rpa = sql_filter(sql_precode = 'IN', sql_code = rpa,
                      x = species, 
                      flag = '-- insert species')
