@@ -18,6 +18,7 @@ lpop <- function(lcomp, cpue, lngs) {
     tidytable::filter.(!is.na(catchjoin), 
                        !(hauljoin %in% lcomp$hauljoin)) -> .no_length
   
+  # compute population est by year, species, strata
   cpue %>%
     tidytable::mutate.(st_num = mean(numcpue) * area,
                        tot = sum(numcpue), 
