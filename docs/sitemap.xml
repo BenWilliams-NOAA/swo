@@ -58,10 +58,28 @@
     <loc>/reference/swo.html</loc>
   </url>
   <url>
+    <loc>/reference/swo_ai_rebs.html</loc>
+  </url>
+  <url>
     <loc>/reference/swo_sim.html</loc>
   </url>
   <url>
+    <loc>/reference/swo_sim_ai_rebs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/swo_sim_goa_dr.html</loc>
+  </url>
+  <url>
     <loc>/reference/swo_sim_goa_rebs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/swo_sim_goa_wc_e.html</loc>
+  </url>
+  <url>
+    <loc>/reference/swo_sim_goa_w_ce.html</loc>
+  </url>
+  <url>
+    <loc>/reference/swo_sim_goa_w_c_e.html</loc>
   </url>
   <url>
     <loc>/reference/swo_tables.html</loc>
