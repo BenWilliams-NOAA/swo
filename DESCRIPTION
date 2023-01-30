@@ -14,7 +14,7 @@ Authors@R:
       person(given = "Meaghan", 
              family = "Bryan" ,
              email = "meaghan.bryan@noaa.gov", 
-             role = "aut"),
+             role = "ctb"),
       person(given = "Steve", 
              family = "Barbeaux",
              email = "steve.barbeaux@noaa.gov", 
