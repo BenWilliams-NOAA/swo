@@ -67,7 +67,7 @@ swo_sim_goa_rebs <- function(iters = 1, lfreq_data, specimen_data, cpue_data, st
   }
   
   # run iterations
-  rr <- purrr::rerun(iters, swo(lfreq_data = lfreq_data, 
+  rr <- purrr::map(1:iters, ~ swo(lfreq_data = lfreq_data, 
                                 specimen_data = specimen_data, 
                                 cpue_data = cpue_data, 
                                 strata_data = strata_data, 

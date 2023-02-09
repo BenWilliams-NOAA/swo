@@ -155,7 +155,7 @@ swo_sim_goa_w_c_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, s
   }
 
   # run iterations for western goa
-  rr <- purrr::rerun(iters, swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "W"), 
+  rr <- purrr::map(1:iters, ~ swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "W"), 
                                 specimen_data = subset(.specimen_data, .specimen_data$region == "W"), 
                                 cpue_data = subset(.cpue_data, .cpue_data$region == "W"), 
                                 strata_data = strata_data, 
@@ -186,7 +186,7 @@ swo_sim_goa_w_c_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, s
     split(., .[,'sim']) -> r_length_w
   
   # run iterations for central goa
-  rr <- purrr::rerun(iters, swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "C"), 
+  rr <- purrr::map(1:iters, ~ swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "C"), 
                                 specimen_data = subset(.specimen_data, .specimen_data$region == "C"), 
                                 cpue_data = subset(.cpue_data, .cpue_data$region == "C"), 
                                 strata_data = strata_data, 
@@ -217,7 +217,7 @@ swo_sim_goa_w_c_e <- function(iters = 1, lfreq_data, specimen_data, cpue_data, s
     split(., .[,'sim']) -> r_length_c
   
   # run iterations for eastern goa
-  rr <- purrr::rerun(iters, swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "E"), 
+  rr <- purrr::map(1:iters, ~ swo(lfreq_data = subset(.lfreq_data, .lfreq_data$region == "E"), 
                                 specimen_data = subset(.specimen_data, .specimen_data$region == "E"), 
                                 cpue_data = subset(.cpue_data, .cpue_data$region == "E"), 
                                 strata_data = strata_data, 
