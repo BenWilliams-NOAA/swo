@@ -1,4 +1,4 @@
-#' replicate swo function
+#' replicate swo function and generate input sample sizes
 #'
 #' @param iters number of iterations (500 recommended)
 #' @param lfreq_data  input dataframe
@@ -98,6 +98,24 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
     tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size
   
+
+  ess_age %>% 
+    tidytable::mutate.(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
+                                                        ess == 'ess_m' ~ 'male',
+                                                        ess == 'ess_t' ~ 'total')) %>% 
+    tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
+                         .by = c(year, species_code, comp_type)) %>% 
+    tidytable::filter.(iss > 0) -> iss_age
+  
+  ess_size %>% 
+    tidytable::mutate.(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
+                                                        ess == 'ess_m' ~ 'male',
+                                                        ess == 'ess_t' ~ 'total')) %>% 
+    tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
+                         .by = c(year, species_code, comp_type)) %>% 
+    tidytable::filter.(iss > 0) -> iss_size
+  
+  
   if(!is.null(save)){
     vroom::vroom_write(ess_age, 
                        here::here("output", region, paste0(save, "_ess_ag.csv")), 
@@ -105,7 +123,15 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
     vroom::vroom_write(ess_size, 
                        here::here("output", region, paste0(save, "_ess_sz.csv")), 
                        delim = ",")
+    
+    vroom::vroom_write(ess_age, 
+                       here::here("output", region, paste0(save, "_iss_ag.csv")), 
+                       delim = ",")
+    vroom::vroom_write(ess_size, 
+                       here::here("output", region, paste0(save, "_iss_sz.csv")), 
+                       delim = ",")
+    
   }
   
-  list(age = ess_age, size = ess_size)
+  list(ess_age = ess_age, ess_size = ess_size, iss_age = iss_age, iss_size = iss_size)
 }

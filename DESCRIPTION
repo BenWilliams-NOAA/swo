@@ -32,6 +32,7 @@ Imports:
     here,
     magrittr,
     odbc,
+    psych,
     purrr,
     tidyr,
     tidytable,
