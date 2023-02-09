@@ -11,6 +11,7 @@
 #' @param boot_lengths resample lengths w/replacement (default = FALSE)
 #' @param boot_ages resample ages w/replacement (default = FALSE)
 #' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
+#' @param reduce_ages reduce the total number of ages used in the analysis (default = NULL)
 #' @param length_samples sample size by length (default = NULL)
 #' @param sex_samples  sample size by sex (default = NULL)
 #' @param save name to save a file
@@ -25,7 +26,7 @@
 #' @examples
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                     yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
-                    boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
+                    boot_ages = FALSE, reduce_lengths = NULL, reduce_ages = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
                     write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
   
   if(isTRUE(write_comp) & is.null(save) | is.null(save)){
@@ -48,8 +49,8 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
             boot_hauls = FALSE, boot_lengths = FALSE, 
-            boot_ages = FALSE, reduce_lengths = NULL, length_samples = NULL, 
-            sex_samples = NULL)
+            boot_ages = FALSE, reduce_lengths = NULL, reduce_ages = NULL,
+            length_samples = NULL, sex_samples = NULL)
   oga <- og$age
   ogl <- og$length
   
@@ -69,6 +70,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
                                 boot_lengths = boot_lengths, 
                                 boot_ages = boot_ages, 
                                 reduce_lengths = reduce_lengths, 
+                                reduce_ages = reduce_ages, 
                                 length_samples = length_samples, 
                                 sex_samples = sex_samples))
   

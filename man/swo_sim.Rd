@@ -2,7 +2,7 @@
 % Please edit documentation in R/swo_sim.R
 \name{swo_sim}
 \alias{swo_sim}
-\title{replicate swo function}
+\title{replicate swo function and generate input sample sizes}
 \usage{
 swo_sim(
   iters = 1,
@@ -16,6 +16,7 @@ swo_sim(
   boot_lengths = FALSE,
   boot_ages = FALSE,
   reduce_lengths = NULL,
+  reduce_ages = NULL,
   length_samples = NULL,
   sex_samples = NULL,
   save = NULL,
@@ -48,6 +49,8 @@ swo_sim(
 
 \item{reduce_lengths}{reduce the total number of lengths used in the analysis (default = NULL)}
 
+\item{reduce_ages}{reduce the total number of ages used in the analysis (default = NULL)}
+
 \item{length_samples}{sample size by length (default = NULL)}
 
 \item{sex_samples}{sample size by sex (default = NULL)}
@@ -63,5 +66,5 @@ swo_sim(
 \item{save_orig}{save the original}
 }
 \description{
-replicate swo function
+replicate swo function and generate input sample sizes
 }

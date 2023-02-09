@@ -15,6 +15,7 @@ swo(
   boot_lengths,
   boot_ages,
   reduce_lengths,
+  reduce_ages,
   length_samples,
   sex_samples
 )
@@ -39,6 +40,8 @@ swo(
 \item{boot_ages}{switch for resampling ages (default = FALSE)}
 
 \item{reduce_lengths}{reduce the total number of lengths used in the analysis (default = NULL)}
+
+\item{reduce_ages}{reduce the total number of ages used in the analysis (default = NULL)}
 
 \item{length_samples}{change sample sizes (default = NULL)}
 

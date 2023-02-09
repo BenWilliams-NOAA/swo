@@ -10,6 +10,7 @@
 #' @param boot_lengths switch for resampling lengths (default = FALSE)
 #' @param boot_ages switch for resampling ages (default = FALSE)
 #' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
+#' @param reduce_ages reduce the total number of ages used in the analysis (default = NULL)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param sex_samples change sample sizes (default = NULL)
 #'
@@ -21,7 +22,7 @@
 #'     boot_lengths = TRUE, length_samples = 100)
 swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
                 strata, boot_hauls, boot_lengths, boot_ages, 
-                reduce_lengths, length_samples, sex_samples) {
+                reduce_lengths, reduce_ages, length_samples, sex_samples) {
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
@@ -56,13 +57,19 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   .lfreq %>% 
     tidytable::uncount.(frequency) -> .lfreq_un
   
+  # reduce sample sizes
   if(!is.null(reduce_lengths)) {
-    l_reduce(.lfreq_un, reduce_lengths) -> .lfreq_un
+    reduce_samples(.lfreq_un, reduce_lengths) -> .lfreq_un
   }
   
   data.table::setDT(specimen_data) %>%
     tidytable::filter.(year >= yrs) %>% 
     tidytable::drop_na.() -> .agedat
+
+  if(!is.null(reduce_ages)) {
+    reduce_samples(.lfreq_un, reduce_ages) -> .agedat
+  }
+    
   
   # randomize hauls ----  
   if(isTRUE(boot_hauls)) {
