@@ -10,10 +10,12 @@
 #' @param boot_hauls resample hauls w/replacement (default = FALSE)
 #' @param boot_lengths resample lengths w/replacement (default = FALSE)
 #' @param boot_ages resample ages w/replacement (default = FALSE)
-#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
-#' @param reduce_ages reduce the total number of ages used in the analysis (default = NULL)
+#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = FALSE)
+#' @param reduce_ages reduce the total number of ages used in the analysis (default = FALSE)
+#' @param reduce_sexlengths reduce the sexed number of lengths used in the analysis (default = FALSE)
 #' @param length_samples sample size by length (default = NULL)
-#' @param sex_samples  sample size by sex (default = NULL)
+#' @param age_samples proportion of sample size by age (default = NULL)
+#' @param sexlen_samples  sample size by sex-length (default = NULL)
 #' @param save name to save a file
 #' @param write_comp save the intermediate age/length comps
 #' @param write_sample save the new "unsexed" default = FALSE
@@ -26,9 +28,10 @@
 #' @examples
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, 
                     yrs = NULL, strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, 
-                    boot_ages = FALSE, reduce_lengths = NULL, reduce_ages = NULL, length_samples = NULL, sex_samples = NULL, save = NULL, 
+                    boot_ages = FALSE, reduce_lengths = FALSE, reduce_ages = FALSE, reduce_sexlengths = FALSE, 
+                    length_samples = NULL, age_samples = NULL, sexlen_samples = NULL, save = NULL, 
                     write_comp = FALSE, write_sample = FALSE, region = NULL, save_orig = FALSE){
-  
+
   if(isTRUE(write_comp) & is.null(save) | is.null(save)){
     stop("have to provide a name for the file, save = ...")
   } 
@@ -48,9 +51,9 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   # get original values
   og <- swo(lfreq_data = lfreq_data, specimen_data = specimen_data, 
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
-            boot_hauls = FALSE, boot_lengths = FALSE, 
-            boot_ages = FALSE, reduce_lengths = NULL, reduce_ages = NULL,
-            length_samples = NULL, sex_samples = NULL)
+            boot_hauls = FALSE, boot_lengths = FALSE, boot_ages = FALSE, 
+            reduce_lengths = NULL, reduce_ages = NULL, reduce_sexlengths = NULL,
+            length_samples = NULL, age_samples = NULL, sexlen_samples = NULL)
   oga <- og$age
   ogl <- og$length
   
@@ -62,17 +65,19 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   
   # run iterations
   rr <- purrr::map(1:iters, ~ swo(lfreq_data = lfreq_data, 
-                                specimen_data = specimen_data, 
-                                cpue_data = cpue_data, 
-                                strata_data = strata_data, 
-                                yrs = yrs, strata = strata, 
-                                boot_hauls = boot_hauls, 
-                                boot_lengths = boot_lengths, 
-                                boot_ages = boot_ages, 
-                                reduce_lengths = reduce_lengths, 
-                                reduce_ages = reduce_ages, 
-                                length_samples = length_samples, 
-                                sex_samples = sex_samples))
+                                  specimen_data = specimen_data, 
+                                  cpue_data = cpue_data, 
+                                  strata_data = strata_data, 
+                                  yrs = yrs, strata = strata, 
+                                  boot_hauls = boot_hauls, 
+                                  boot_lengths = boot_lengths, 
+                                  boot_ages = boot_ages, 
+                                  reduce_lengths = reduce_lengths, 
+                                  reduce_ages = reduce_ages, 
+                                  reduce_sexlengths = reduce_sexlengths,
+                                  length_samples = length_samples, 
+                                  age_samples = age_samples,
+                                  sexlen_samples = sexlen_samples))
   
   r_age <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$age
   r_length <- do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$length
@@ -87,8 +92,8 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
       vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size.csv")), delim = ",")
   }
   
-  if(isTRUE(write_sample) & !is.null(length_samples)) {
-    do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$unsexed %>%
+  if(isTRUE(write_sample) & !is.null(length_samples) | !is.null(sexlen_samples)) {
+    do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$nosamp %>%
       tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
       vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
   }
@@ -126,10 +131,10 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
                        here::here("output", region, paste0(save, "_ess_sz.csv")), 
                        delim = ",")
     
-    vroom::vroom_write(ess_age, 
+    vroom::vroom_write(iss_age, 
                        here::here("output", region, paste0(save, "_iss_ag.csv")), 
                        delim = ",")
-    vroom::vroom_write(ess_size, 
+    vroom::vroom_write(iss_size, 
                        here::here("output", region, paste0(save, "_iss_sz.csv")), 
                        delim = ",")
     

@@ -43,7 +43,7 @@ sample <- function(lfreq_un, samples, type = 'length') {
         dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
         dplyr::count(name = 'frequency') -> .new_unsexed
       
-      .out = list(data = .data, unsexed = .new_unsexed)
+      .out = list(data = .data, nosamp = .new_unsexed)
    
     
   } else {
