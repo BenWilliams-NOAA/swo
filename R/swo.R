@@ -9,8 +9,8 @@
 #' @param boot_hauls switch for resampling hauls (default = FALSE)
 #' @param boot_lengths switch for resampling lengths (default = FALSE)
 #' @param boot_ages switch for resampling ages (default = FALSE)
-#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = NULL)
-#' @param reduce_ages reduce the total number of ages used in the analysis (default = NULL)
+#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = FALSE)
+#' @param reduce_ages reduce the total number of ages used in the analysis (default = FALSE)
 #' @param reduce_sexlengths reduce the sexed number of lengths used in the analysis (default = NULL)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param age_samples change sample sizes (default = NULL)
@@ -28,7 +28,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
- 
+  
   # prep data ----
   # complete cases by length/sex/strata for all years
   if(isTRUE(strata)){
@@ -62,7 +62,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   data.table::setDT(specimen_data) %>%
     tidytable::filter.(year >= yrs) %>% 
     tidytable::drop_na.() -> .agedat 
-
+  
   # randomize hauls ----  
   if(isTRUE(boot_hauls)) {
     boot_haul(.cpue) -> .hls
@@ -86,13 +86,13 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   }
   
   # reduce sex-specific length freq sample size (and move unselected samples to 'unsexed' category)
-  if(!is.null(reduce_sexlengths)) {
+  if(!isFALSE(reduce_sexlengths)) {
     sample(.lfreq_un, samples = sexlen_samples) -> .out
     .lfreq_un <- .out$data
   }
   
   # reduce overall length freq sample sizes
-  if(!is.null(reduce_lengths)) {
+  if(!isFALSE(reduce_lengths)) {
     reduce_samples(.lfreq_un, samples = length_samples, type = 'length') -> .out
     .lfreq_un <- .out$data
   }
@@ -105,22 +105,22 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # randomize age ----
   if(isTRUE(boot_ages)) {
-  boot_age(.agedat) -> .agedat
+    boot_age(.agedat) -> .agedat
   }
   
   # reduce overall age sample sizes
-  if(!is.null(reduce_ages)) {
+  if(!isFALSE(reduce_ages)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
     .agedat <- .out$data
   }
   
   # age population ----
   apop(.lpop, .agedat, strata = strata) -> .apop
- 
+  
   if(!is.null(length_samples) | !is.null(sexlen_samples)) {
     list(age = .apop, length = .lpop, nosamp = .out$nosamp)
   } else {
     list(age = .apop, length = .lpop)
   }
-   
+  
 }
