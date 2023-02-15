@@ -9,9 +9,6 @@
 #' @param boot_hauls switch for resampling hauls (default = FALSE)
 #' @param boot_lengths switch for resampling lengths (default = FALSE)
 #' @param boot_ages switch for resampling ages (default = FALSE)
-#' @param reduce_lengths reduce the total number of lengths used in the analysis (default = FALSE)
-#' @param reduce_ages reduce the total number of ages used in the analysis (default = FALSE)
-#' @param reduce_sexlengths reduce the sexed number of lengths used in the analysis (default = NULL)
 #' @param length_samples change sample sizes (default = NULL)
 #' @param age_samples change sample sizes (default = NULL)
 #' @param sexlen_samples change sample sizes (default = NULL)
@@ -20,11 +17,9 @@
 #' @export swo
 #'
 #' @examples
-#' swo(lfreq, specimen, cpue, strata_data, yrs = 2015, boot_hauls = TRUE,
-#'     boot_lengths = TRUE, length_samples = 100)
 swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
                 strata, boot_hauls, boot_lengths, boot_ages, 
-                reduce_lengths, reduce_ages, reduce_sexlengths, length_samples, age_samples, sexlen_samples) {
+                length_samples, age_samples, sexlen_samples) {
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
@@ -86,13 +81,13 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   }
   
   # reduce sex-specific length freq sample size (and move unselected samples to 'unsexed' category)
-  if(!isFALSE(reduce_sexlengths)) {
+  if(!is.null(sexlen_samples)) {
     sample(.lfreq_un, samples = sexlen_samples) -> .out
     .lfreq_un <- .out$data
   }
   
   # reduce overall length freq sample sizes
-  if(!isFALSE(reduce_lengths)) {
+  if(!is.null(length_samples)) {
     reduce_samples(.lfreq_un, samples = length_samples, type = 'length') -> .out
     .lfreq_un <- .out$data
   }
@@ -109,7 +104,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   }
   
   # reduce overall age sample sizes
-  if(!isFALSE(reduce_ages)) {
+  if(!is.null(age_samples)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
     .agedat <- .out$data
   }
