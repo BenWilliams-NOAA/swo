@@ -61,23 +61,24 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # randomize hauls ----  
   if(isTRUE(boot_hauls)) {
     boot_haul(.cpue) %>% 
-      tidytable::mutate(hauljoin_unq = .I) -> .hls
+      tidytable::mutate.(hauljoin_unq = .I) -> .hls
     
     .hls %>% 
-      tidytable::left_join(.cpue) %>% 
+      tidytable::left_join.(.cpue) %>% 
       tidytable::rename(hauljoin_orig = 'hauljoin',
                         hauljoin = 'hauljoin_unq') -> .cpue
     .hls %>% 
-      tidytable::left_join(.lfreq) %>% 
+      tidytable::left_join.(.lfreq) %>% 
       tidytable::rename(hauljoin_orig = 'hauljoin',
                         hauljoin = 'hauljoin_unq') -> .lfreq
     .hls %>% 
-      tidytable::left_join(.lfreq_un) %>% 
+      tidytable::left_join.(.lfreq_un) %>% 
+      tidytable::drop_na.() %>% 
       tidytable::rename(hauljoin_orig = 'hauljoin',
                         hauljoin = 'hauljoin_unq') -> .lfreq_un
     .hls %>% 
-      tidytable::left_join(.agedat) %>% 
-      tidytable::drop_na() %>% 
+      tidytable::left_join.(.agedat) %>% 
+      tidytable::drop_na.() %>% 
       tidytable::rename(hauljoin_orig = 'hauljoin',
                         hauljoin = 'hauljoin_unq') -> .agedat
     
@@ -91,21 +92,31 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # reduce sex-specific length freq sample size (and move unselected samples to 'unsexed' category)
   if(!is.null(sexlen_samples)) {
     sample(.lfreq_un, samples = sexlen_samples) -> .out
-    .lfreq_un <- .out$data
+    .lfreq_un_sub <- .out$data
   }
   
   # reduce overall length freq sample sizes
   if(!is.null(length_samples)) {
     reduce_samples(.lfreq_un, samples = length_samples, type = 'length') -> .out
-    .lfreq_un <- .out$data
+    .lfreq_un_sub <- .out$data
   }
   
   # length comp ----
-  lcomp(.lfreq_un) -> .lcomp
+  if(!is.null(length_samples) | !is.null(sexlen_samples)) {
+    lcomp(.lfreq_un) -> .lcomp
+    lcomp(.lfreq_un_sub) -> .lcomp_sub
+  } else{
+    lcomp(.lfreq_un) -> .lcomp
+  }
   
   # length population ----
-  lpop(.lcomp, .cpue, .lngs) -> .lpop
-  
+  if(!is.null(length_samples) | !is.null(sexlen_samples)) {
+    lpop(.lcomp, .cpue, .lngs) -> .lpop
+    lpop(.lcomp_sub, .cpue, .lngs) -> .lpop_sub
+  }else{
+    lpop(.lcomp, .cpue, .lngs) -> .lpop
+  }
+    
   # randomize age ----
   if(isTRUE(boot_ages)) {
     boot_age(.agedat) -> .agedat
@@ -114,15 +125,36 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # reduce overall age sample sizes
   if(!is.null(age_samples)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
-    .agedat <- .out$data
+    .agedat_sub <- .out$data
   }
   
   # age population ----
-  apop(.lpop, .agedat, strata = strata) -> .apop
   
+  # age pop'n with length subsampling
   if(!is.null(length_samples) | !is.null(sexlen_samples)) {
-    list(age = .apop, length = .lpop, nosamp = .out$nosamp)
-  } else {
+    apop(.lpop, .agedat, strata = strata) -> .apop
+    apop(.lpop_sub, .agedat, strata = strata) -> .apop_sub
+  }
+  
+  # age pop'n with age subsampling
+  if(!is.null(age_samples)) {
+    apop(.lpop, .agedat, strata = strata) -> .apop
+    apop(.lpop, .agedat_sub, strata = strata) -> .apop_sub
+  }
+  
+  # age pop'n with no length or age subsampling
+  if(is.null(length_samples) & is.null(sexlen_samples) & is.null(age_samples)){
+    apop(.lpop, .agedat, strata = strata) -> .apop
+  }
+  
+  # list results ----
+  
+  # with length subsampling
+  if(!is.null(length_samples) | !is.null(sexlen_samples)) { # with length subsampling
+    list(age = .apop, age_sub = .apop_sub, length = .lpop, length_sub = .lpop_sub, nosamp = .out$nosamp)
+  } else if(!is.null(age_samples)) { # with age subsampling
+    list(age = .apop, age_sub = .apop_sub, length = .lpop, nosamp = .out$nosamp)
+  } else if(is.null(length_samples) & is.null(sexlen_samples) & is.null(age_samples)){ # with no subsamplinng
     list(age = .apop, length = .lpop)
   }
   
