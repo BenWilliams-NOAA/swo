@@ -86,76 +86,64 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # randomize lengths ----
   if(isTRUE(boot_lengths)) {
-    boot_length(.lfreq_un) -> .lfreq_un
+    boot_length(.lfreq_un) %>% 
+      tidytable::mutate(type = 'base') -> .lfreq_un
+  } else{
+    .lfreq_un %>% 
+      tidytable::mutate(type = 'base') -> .lfreq_un
   }
   
   # reduce sex-specific length freq sample size (and move unselected samples to 'unsexed' category)
   if(!is.null(sexlen_samples)) {
     sample(.lfreq_un, samples = sexlen_samples) -> .out
     .lfreq_un_sub <- .out$data
+    .lfreq_un_sub %>% 
+      tidytable::mutate(type = 'sub') %>% 
+      tidytable::select(-id, -n) %>% 
+      tidytable::bind_rows(.lfreq_un) -> .lfreq_un
   }
   
   # reduce overall length freq sample sizes
   if(!is.null(length_samples)) {
     reduce_samples(.lfreq_un, samples = length_samples, type = 'length') -> .out
     .lfreq_un_sub <- .out$data
+    .lfreq_un_sub %>% 
+      tidytable::mutate(type = 'sub') %>% 
+      tidytable::select(-id) %>% 
+      tidytable::bind_rows(.lfreq_un) -> .lfreq_un
   }
   
   # length comp ----
-  if(!is.null(length_samples) | !is.null(sexlen_samples)) {
-    lcomp(.lfreq_un) -> .lcomp
-    lcomp(.lfreq_un_sub) -> .lcomp_sub
-  } else{
-    lcomp(.lfreq_un) -> .lcomp
-  }
+  lcomp(.lfreq_un) -> .lcomp
   
   # length population ----
-  if(!is.null(length_samples) | !is.null(sexlen_samples)) {
-    lpop(.lcomp, .cpue, .lngs) -> .lpop
-    lpop(.lcomp_sub, .cpue, .lngs) -> .lpop_sub
-  }else{
-    lpop(.lcomp, .cpue, .lngs) -> .lpop
-  }
-    
+  lpop(.lcomp, .cpue, .lngs) -> .lpop
+  
   # randomize age ----
   if(isTRUE(boot_ages)) {
-    boot_age(.agedat) -> .agedat
+    boot_age(.agedat) %>% 
+      tidytable::mutate(type = 'base') -> .agedat
+  } else{
+    .agedat %>% 
+      tidytable::mutate(type = 'base') -> .agedat
   }
   
   # reduce overall age sample sizes
   if(!is.null(age_samples)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
     .agedat_sub <- .out$data
+    .agedat_sub  %>% 
+      tidytable::mutate(type = 'sub') %>% 
+      tidytable::select(-id) %>% 
+      tidytable::bind_rows(.agedat) -> .agedat
   }
   
   # age population ----
   
   # age pop'n with length subsampling
-  if(!is.null(length_samples) | !is.null(sexlen_samples)) {
-    apop(.lpop, .agedat, strata = strata) -> .apop
-    apop(.lpop_sub, .agedat, strata = strata) -> .apop_sub
-  }
-  
-  # age pop'n with age subsampling
-  if(!is.null(age_samples)) {
-    apop(.lpop, .agedat, strata = strata) -> .apop
-    apop(.lpop, .agedat_sub, strata = strata) -> .apop_sub
-  }
-  
-  # age pop'n with no length or age subsampling
-  if(is.null(length_samples) & is.null(sexlen_samples) & is.null(age_samples)){
-    apop(.lpop, .agedat, strata = strata) -> .apop
-  }
+  apop(.lpop, .agedat, strata = strata) -> .apop
   
   # list results ----
-  
-  # with length subsampling
-  if(!is.null(length_samples) | !is.null(sexlen_samples)) { # with length subsampling
-    list(age = .apop, age_sub = .apop_sub, length = .lpop, length_sub = .lpop_sub, nosamp = .out$nosamp)
-  } else if(!is.null(age_samples)) { # with age subsampling
-    list(age = .apop, age_sub = .apop_sub, length = .lpop, nosamp = .out$nosamp)
-  } else if(is.null(length_samples) & is.null(sexlen_samples) & is.null(age_samples)){ # with no subsamplinng
-    list(age = .apop, length = .lpop)
-  }
+  list(age = .apop, length = .lpop)
   
 }
