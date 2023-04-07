@@ -3,10 +3,7 @@
 #' @param lpop length population data
 #' @param agedat age dataframe
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
 apop <- function(lpop, agedat, strata){
   
   # reformat size pop'n data
