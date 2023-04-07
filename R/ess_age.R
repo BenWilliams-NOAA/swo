@@ -4,10 +4,7 @@
 #' @param og_data original abundance by age data (single list)
 #' @param strata switch to perform analysis at regional or strata level (default = NULL)
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
 ess_age <- function(sim_data, og_data, strata){
   
   if ("stratum" %in% names(og_data) & isFALSE(strata) |

@@ -3,11 +3,7 @@
 #' @param lcomp length comp
 #' @param cpue cpue data
 #' @param lngs complete lengths by year
-#'
-#' @return
-#' @export
-#'
-#' @examples
+
 lpop <- function(lcomp, cpue, lngs) {
   lcomp %>%
     tidytable::summarise.(comp = sum(comp) / mean(nhauls), 

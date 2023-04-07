@@ -12,11 +12,7 @@
 #' @param length_samples change sample sizes (default = NULL)
 #' @param age_samples change sample sizes (default = NULL)
 #' @param sexlen_samples change sample sizes (default = NULL)
-#'
-#' @return
-#' @export swo
-#'
-#' @examples
+
 swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
                 strata, boot_hauls, boot_lengths, boot_ages, 
                 length_samples, age_samples, sexlen_samples) {

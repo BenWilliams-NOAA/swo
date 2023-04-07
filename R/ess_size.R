@@ -4,10 +4,6 @@
 #' @param og_data original abundance by length data (single list)
 #' @param strata switch to perform analysis at regional or strata level (default = NULL)
 #'
-#' @return
-#' @export
-#'
-#' @examples
 ess_size <- function(sim_data, og_data, strata) {
   
   if ("stratum" %in% names(og_data) & isFALSE(strata) |

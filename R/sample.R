@@ -4,10 +4,6 @@
 #' @param samples number of samples to take (default = NULL)
 #' @param type length or sex samples (default = 'length')
 #'
-#' @return
-#' @export
-#'
-#' @examples
 sample <- function(lfreq_un, samples, type = 'length') {
   
   if(type == 'length'){

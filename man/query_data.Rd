@@ -19,6 +19,9 @@ query_data(region, species, yrs = NULL, afsc_user, afsc_pwd, nbs = FALSE)
 
 \item{nbs}{switch to include northern Bering Sea data (default: FALSE)}
 }
+\value{
+csv files of length, specimen, cpue, strata data and species codes will be stored in 'data/' folder
+}
 \description{
 query racebase
 }

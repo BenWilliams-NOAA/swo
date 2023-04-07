@@ -2,10 +2,7 @@
 #'
 #' @param age_dat age specimen data 
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
 boot_age <- function(age_dat) {
   # combine sex length age to common id - bootstrap based on year, species, haul
   # then split back apart

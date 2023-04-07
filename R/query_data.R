@@ -8,7 +8,7 @@
 #' @param afsc_pwd afsc database password
 #' @param nbs switch to include northern Bering Sea data (default: FALSE)
 #'
-#' @return
+#' @return csv files of length, specimen, cpue, strata data and species codes will be stored in 'data/' folder
 #' @export query_data
 #'
 #' @examples

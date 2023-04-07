@@ -5,11 +5,6 @@
 #' @param grp grouping variable(s)
 #' @param type either age or length reduction (default = NULL)
 #'
-#' @return
-#' @export reduce_samples
-#'
-#'
-#' @examples
 reduce_samples <- function(data, samples, grp = c('year', 'species_code', 'stratum', 'hauljoin'), type = NULL){
 
   data %>% 

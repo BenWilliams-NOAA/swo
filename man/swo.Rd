@@ -14,10 +14,9 @@ swo(
   boot_hauls,
   boot_lengths,
   boot_ages,
-  reduce_lengths,
-  reduce_ages,
   length_samples,
-  sex_samples
+  age_samples,
+  sexlen_samples
 )
 }
 \arguments{
@@ -39,18 +38,12 @@ swo(
 
 \item{boot_ages}{switch for resampling ages (default = FALSE)}
 
-\item{reduce_lengths}{reduce the total number of lengths used in the analysis (default = NULL)}
-
-\item{reduce_ages}{reduce the total number of ages used in the analysis (default = NULL)}
-
 \item{length_samples}{change sample sizes (default = NULL)}
 
-\item{sex_samples}{change sample sizes (default = NULL)}
+\item{age_samples}{change sample sizes (default = NULL)}
+
+\item{sexlen_samples}{change sample sizes (default = NULL)}
 }
 \description{
 primary survey workload optimization function
-}
-\examples{
-swo(lfreq, specimen, cpue, strata_data, yrs = 2015, boot_hauls = TRUE,
-    boot_lengths = TRUE, length_samples = 100)
 }

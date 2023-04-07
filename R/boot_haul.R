@@ -2,10 +2,6 @@
 #'
 #' @param cpue_data cpue dataframe
 #'
-#' @return
-#' @export
-#'
-#' @examples
 boot_haul <- function(cpue_data) {
   
   cpue_data %>% 

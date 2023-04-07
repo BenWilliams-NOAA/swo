@@ -15,15 +15,12 @@ swo_sim(
   boot_hauls = FALSE,
   boot_lengths = FALSE,
   boot_ages = FALSE,
-  reduce_lengths = NULL,
-  reduce_ages = NULL,
   length_samples = NULL,
-  sex_samples = NULL,
+  age_samples = NULL,
+  sexlen_samples = NULL,
   save = NULL,
-  write_comp = FALSE,
-  write_sample = FALSE,
-  region = NULL,
-  save_orig = FALSE
+  write_interm = FALSE,
+  region = NULL
 )
 }
 \arguments{
@@ -47,24 +44,29 @@ swo_sim(
 
 \item{boot_ages}{resample ages w/replacement (default = FALSE)}
 
-\item{reduce_lengths}{reduce the total number of lengths used in the analysis (default = NULL)}
-
-\item{reduce_ages}{reduce the total number of ages used in the analysis (default = NULL)}
-
 \item{length_samples}{sample size by length (default = NULL)}
 
-\item{sex_samples}{sample size by sex (default = NULL)}
+\item{age_samples}{proportion of sample size by age (default = NULL)}
+
+\item{sexlen_samples}{sample size by sex-length (default = NULL)}
 
 \item{save}{name to save a file}
 
-\item{write_comp}{save the intermediate age/length comps}
-
-\item{write_sample}{save the new "unsexed" default = FALSE}
+\item{write_interm}{save the intermediate age/length comps, the new "unsexed/unsampled" samples, and original length/age pop'n ests}
 
 \item{region}{region will create a folder and place results in said folder}
-
-\item{save_orig}{save the original}
+}
+\value{
+effective sample sizes and imput sample sizes
 }
 \description{
 replicate swo function and generate input sample sizes
+}
+\examples{
+\dontrun{
+swo_sim(iters=500, lfreq_data, specimen_data, cpue_data, strata_data, yrs = 2015,
+                   strata = FALSE, boot_hauls = TRUE, boot_lengths = TRUE, boot_ages = FALSE,
+                  length_samples = NULL, age_samples = NULL, sexlen_samples = NULL, save = "test", 
+                   write_interm = FALSE, region = "goa")
+}
 }

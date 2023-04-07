@@ -2,10 +2,6 @@
 #'
 #' @param lfreq_un expanded length frequency data 
 #'
-#' @return
-#' @export
-#'
-#' @examples
 boot_length <- function(lfreq_un) {
   
   lfreq_un %>%

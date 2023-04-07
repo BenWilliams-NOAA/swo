@@ -2,10 +2,6 @@
 #'
 #' @param lfreq_un expanded length frequency data
 #'
-#' @return
-#' @export
-#'
-#' @examples
 lcomp <- function(lfreq_un) {
   lfreq_un %>%
     tidytable::summarise.(frequency = .N,

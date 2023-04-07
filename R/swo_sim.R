@@ -17,10 +17,16 @@
 #' @param write_interm save the intermediate age/length comps, the new "unsexed/unsampled" samples, and original length/age pop'n ests
 #' @param region region will create a folder and place results in said folder
 #'
-#' @return
+#' @return effective sample sizes and imput sample sizes
 #' @export swo_sim
 #'
 #' @examples
+#' \dontrun{
+#' swo_sim(iters=500, lfreq_data, specimen_data, cpue_data, strata_data, yrs = 2015,
+#'                    strata = FALSE, boot_hauls = TRUE, boot_lengths = TRUE, boot_ages = FALSE,
+#'                   length_samples = NULL, age_samples = NULL, sexlen_samples = NULL, save = "test", 
+#'                    write_interm = FALSE, region = "goa")
+#'}
 swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data, yrs = NULL,
                     strata = FALSE, boot_hauls = FALSE, boot_lengths = FALSE, boot_ages = FALSE,
                     length_samples = NULL, age_samples = NULL, sexlen_samples = NULL, save = NULL, 

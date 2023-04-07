@@ -7,7 +7,8 @@
 reduce_samples(
   data,
   samples,
-  grp = c("year", "species_code", "stratum", "hauljoin")
+  grp = c("year", "species_code", "stratum", "hauljoin"),
+  type = NULL
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ reduce_samples(
 \item{samples}{number of lengths to take}
 
 \item{grp}{grouping variable(s)}
+
+\item{type}{either age or length reduction (default = NULL)}
 }
 \description{
 reduce total number of lengths or ages
