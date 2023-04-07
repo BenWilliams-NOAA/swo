@@ -29,7 +29,7 @@ apop <- function(lpop, agedat, strata){
       tidytable::mutate.(agepop = sum(agepop), 
                          .by = c(year, species_code, stratum, sex, age)) %>%
       tidytable::select.(year, species_code, sex, stratum, age, agepop) %>%
-      unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>% 
+      data.table::unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>% 
       tidytable::filter.(sex != 3) -> .agepop_mf
     
     # compute resampled age pop'n for unsexed (og rule is if you have a year with unsexed specimen data you use all the specimen data)
@@ -57,7 +57,7 @@ apop <- function(lpop, agedat, strata){
         tidytable::mutate.(agepop = sum(agepop), 
                            .by = c(year, species_code, stratum, age)) %>%
         tidytable::select.(year, species_code, stratum, sex, age, agepop) %>% 
-        unique(., by = c('year', 'species_code', 'stratum', 'sex', 'age', 'agepop')) %>%
+        data.table::unique(., by = c('year', 'species_code', 'stratum', 'sex', 'age', 'agepop')) %>%
         tidytable::select.(-c(length, age_num, age_frac, sizepop)) %>% 
         tidytable::bind_rows.(.agepop_mf) %>%
         tidytable::pivot_wider.(names_from = sex, values_from = agepop, values_fill = 0) %>%
@@ -81,7 +81,7 @@ apop <- function(lpop, agedat, strata){
     tidytable::mutate.(agepop = sum(agepop), 
                        .by = c(year, species_code, sex, age)) %>%
     tidytable::select.(year, species_code, sex, age, agepop) %>%
-    unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>% 
+    data.table::unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>% 
     tidytable::filter.(sex != 3) -> .agepop_mf
   
   # compute resampled age pop'n for unsexed (og rule is if you have a year with unsexed specimen data you use all the specimen data)
@@ -107,7 +107,7 @@ apop <- function(lpop, agedat, strata){
                          .by = c(year, species_code, length)) %>%
       tidytable::mutate.(agepop = sum(agepop), 
                          .by = c(year, species_code, age)) %>%
-      unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>%
+      data.table::unique(., by = c('year', 'species_code', 'sex', 'age', 'agepop')) %>%
       tidytable::select.(-c(length, age_num, age_frac, sizepop)) %>% 
       tidytable::bind_rows.(.agepop_mf) %>%
       tidytable::pivot_wider.(names_from = sex, values_from = agepop, values_fill = 0) %>%
