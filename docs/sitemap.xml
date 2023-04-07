@@ -16,6 +16,9 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/apop.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/query_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/reduce_samples.html</loc>
   </url>
   <url>
     <loc>/reference/sample.html</loc>

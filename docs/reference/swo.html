@@ -21,6 +21,9 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -58,9 +61,9 @@
 <span>  <span class="va">boot_hauls</span>,</span>
 <span>  <span class="va">boot_lengths</span>,</span>
 <span>  <span class="va">boot_ages</span>,</span>
-<span>  <span class="va">reduce_lengths</span>,</span>
 <span>  <span class="va">length_samples</span>,</span>
-<span>  <span class="va">sex_samples</span></span>
+<span>  <span class="va">age_samples</span>,</span>
+<span>  <span class="va">sexlen_samples</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -102,24 +105,19 @@
 <dd><p>switch for resampling ages (default = FALSE)</p></dd>
 
 
-<dt>reduce_lengths</dt>
-<dd><p>reduce the total number of lengths used in the analysis (default = NULL)</p></dd>
-
-
 <dt>length_samples</dt>
 <dd><p>change sample sizes (default = NULL)</p></dd>
 
 
-<dt>sex_samples</dt>
+<dt>age_samples</dt>
+<dd><p>change sample sizes (default = NULL)</p></dd>
+
+
+<dt>sexlen_samples</dt>
 <dd><p>change sample sizes (default = NULL)</p></dd>
 
 </dl></div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">swo</span><span class="op">(</span><span class="va">lfreq</span>, <span class="va">specimen</span>, <span class="va">cpue</span>, <span class="va">strata_data</span>, yrs <span class="op">=</span> <span class="fl">2015</span>, boot_hauls <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    boot_lengths <span class="op">=</span> <span class="cn">TRUE</span>, length_samples <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
