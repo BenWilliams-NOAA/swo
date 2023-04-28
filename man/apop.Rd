@@ -10,6 +10,8 @@ apop(lpop, agedat, strata)
 \item{lpop}{length population data}
 
 \item{agedat}{age dataframe}
+
+\item{strata}{pass through param from swo function}
 }
 \description{
 population at age
