@@ -24,35 +24,31 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   # complete cases by length/sex/strata for all years
   if(isTRUE(strata)){
     lfreq_data %>%
-      tidytable::filter.(year >= yrs) %>% 
-      tibble::as_tibble() %>% 
-      dplyr::group_by(species_code) %>%
-      dplyr::distinct(length, year, stratum) %>%
-      tidyr::expand(length, year, stratum) -> .lngs
+      tidytable::filter(year >= yrs) %>% 
+      tidytable::expand(year, length, stratum, .by = species_code) -> .lngs
   } else {
     lfreq_data %>%
       tidytable::filter.(year >= yrs) %>% 
-      tibble::as_tibble() %>% 
-      dplyr::group_by(species_code) %>%
-      dplyr::distinct(length, year) %>%
-      tidyr::expand(length, year) -> .lngs
+      tidytable::expand(year, length, .by = species_code) -> .lngs
   }
   
   # first pass of filtering
-  data.table::setDT(cpue_data) %>%
-    tidytable::filter.(year >= yrs) %>% 
-    tidytable::left_join.(strata_data) -> .cpue
+  cpue_data %>%
+    tidytable::filter(year >= yrs) %>% 
+    tidytable::left_join(strata_data) -> .cpue
   
-  data.table::setDT(lfreq_data) %>%
-    tidytable::filter.(year >= yrs) %>% 
-    tidytable::drop_na.() -> .lfreq
+  lfreq_data %>%
+    tidytable::filter(year >= yrs) %>% 
+    tidytable::drop_na() -> .lfreq
   
+  # create unique id and expand values for sampling
   .lfreq %>% 
-    tidytable::uncount.(frequency) -> .lfreq_un
+    tidytable::mutate(sex_ln = paste0(sex, "-", length)) %>% 
+    tidytable::uncount(frequency) -> .lfreq_un
   
   data.table::setDT(specimen_data) %>%
-    tidytable::filter.(year >= yrs) %>% 
-    tidytable::drop_na.() -> .agedat 
+    tidytable::filter(year >= yrs) %>% 
+    tidytable::drop_na() -> .agedat 
   
   # randomize hauls ----  
   if(isTRUE(boot_hauls)) {
