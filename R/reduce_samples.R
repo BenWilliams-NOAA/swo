@@ -18,9 +18,9 @@ reduce_samples <- function(data, samples, grp = c('year', 'species_code', 'strat
   }
 
   .inter %>%
-    tidytable::anti_join.(.new_samp, by = "id") %>% 
-    dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
-    dplyr::count(name = 'frequency') -> .redux_samp
+    tidytable::anti_join(.new_samp, by = "id") %>% 
+    tidytable::mutate(frequency = .N,
+                      .by = c(year, species_code, stratum, hauljoin, sex, length)) -> .redux_samp
   
   .out = list(data = .new_samp, nosamp = .redux_samp)
 
