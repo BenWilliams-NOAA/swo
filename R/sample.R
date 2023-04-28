@@ -8,17 +8,17 @@ sample <- function(lfreq_un, samples, type = 'length') {
   
   if(type == 'length'){
     lfreq_un %>%
-      tidytable::filter.(sex != 3) %>%
-      tidytable::mutate.(id = .I) %>%
-      tidytable::mutate.(n = .N, 
+      tidytable::filter(sex != 3) %>%
+      tidytable::mutate(id = .I) %>%
+      tidytable::mutate(n = .N, 
                          .by = c(year, species_code, stratum, hauljoin)) -> .inter
     
     # sample by sample size
     core_samp(.inter, samples)  -> .new_sexed
     
     .inter %>%
-      tidytable::anti_join.(.new_sexed, by = "id") %>%
-      tidytable::mutate.(sex = 3) -> .new_unsexed
+      tidytable::anti_join(.new_sexed, by = "id") %>%
+      tidytable::mutate(sex = 3) -> .new_unsexed
     
     # if(isTRUE(write_sample)){
     #   .new_unsexed %>% 
@@ -29,15 +29,15 @@ sample <- function(lfreq_un, samples, type = 'length') {
     
     # rejoin to original unsexed
     lfreq_un %>%
-      tidytable::filter.(sex == 3) %>%
-      tidytable::mutate.(id = .I,
+      tidytable::filter(sex == 3) %>%
+      tidytable::mutate(id = .I,
                          n = .N, .by = c(year, species_code, stratum, hauljoin)) %>%
-      tidytable::bind_rows.(.new_sexed, .new_unsexed)  -> .data
+      tidytable::bind_rows(.new_sexed, .new_unsexed)  -> .data
     
 
       .new_unsexed %>% 
-        dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
-        dplyr::count(name = 'frequency') -> .new_unsexed
+        tidytable::mutate(frequency = .N,
+                          .by = c(year, species_code, stratum, hauljoin, length)) -> .new_unsexed
       
       .out = list(data = .data, nosamp = .new_unsexed)
    
