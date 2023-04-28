@@ -28,7 +28,7 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
       tidytable::expand(year, length, stratum, .by = species_code) -> .lngs
   } else {
     lfreq_data %>%
-      tidytable::filter.(year >= yrs) %>% 
+      tidytable::filter(year >= yrs) %>% 
       tidytable::expand(year, length, .by = species_code) -> .lngs
   }
   
