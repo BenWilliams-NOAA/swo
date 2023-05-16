@@ -4,6 +4,7 @@
 #' @param specimen_data age-length specimen data
 #' @param cpue_data abundance by length data 
 #' @param strata_data strata and associated area 
+#' @param r_t reader/tester ageing data 
 #' @param yrs age filter returns years >= (default = NULL)
 #' @param strata switch for analyzing by strata (default = FALSE) - not currently implemented
 #' @param boot_hauls switch for resampling hauls (default = FALSE)
@@ -12,10 +13,25 @@
 #' @param length_samples change sample sizes (default = NULL)
 #' @param age_samples change sample sizes (default = NULL)
 #' @param sexlen_samples change sample sizes (default = NULL)
-
-swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs, 
-                strata, boot_hauls, boot_lengths, boot_ages, 
-                length_samples, age_samples, sexlen_samples) {
+#' @param al_var switch for including age-length variability (default = FALSE)
+#' @param age_err switch for including ageing error (default = FALSE)
+#'
+swo <- function(lfreq_data, 
+                specimen_data, 
+                cpue_data, 
+                strata_data, 
+                r_t,
+                yrs, 
+                strata, 
+                boot_hauls, 
+                boot_lengths,
+                boot_ages, 
+                al_var, 
+                age_err, 
+                length_samples, 
+                age_samples, 
+                sexlen_samples) {
+  
   # globals ----
   # year switch
   if (is.null(yrs)) yrs <- 0
@@ -104,13 +120,44 @@ swo <- function(lfreq_data, specimen_data, cpue_data, strata_data, yrs,
   
   # randomize age ----
   if(isTRUE(boot_ages)) {
-    boot_age(.agedat) -> .agedat
+    boot_age(.agedat) %>% 
+      tidytable::mutate(type = 'base') -> .agedat
+  } else{
+    .agedat %>% 
+      tidytable::mutate(type = 'base') -> .agedat
   }
   
   # reduce overall age sample sizes
   if(!is.null(age_samples)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
     .agedat <- .out$data
+  }
+  
+  # add age-length variability ----
+  if(isTRUE(al_var)) {
+    al_variab(.agedat)  %>% 
+      tidytable::mutate(type = 'al') -> .agedat_al
+  }
+  
+  # add ageing error ----
+  if(isTRUE(age_err)) {
+    age_error(.agedat, r_t)  %>% 
+      tidytable::mutate(type = 'ae') -> .agedat_ae
+  }
+  
+  # with age-length and ageing error ----
+  if(isTRUE(al_var) & isTRUE(age_err)) {
+    age_error(.agedat_al, r_t)  %>% 
+      tidytable::mutate(type = 'ae_al') %>% 
+      tidytable::bind_rows(.agedat_al) %>% 
+      tidytable::bind_rows(.agedat_ae) %>% 
+      tidytable::bind_rows(.agedat) -> .agedat
+  } else if(isTRUE(al_var) & !isTRUE(age_err)){
+    .agedat %>% 
+      tidytable::bind_rows(.agedat_al) -> .agedat
+  } else if(!isTRUE(al_var) & isTRUE(age_err)){
+    .agedat %>% 
+      tidytable::bind_rows(.agedat_ae) -> .agedat
   }
   
   # age population ----
