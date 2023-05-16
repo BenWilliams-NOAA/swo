@@ -97,7 +97,11 @@ swo <- function(lfreq_data,
   
   # randomize lengths ----
   if(isTRUE(boot_lengths)) {
-    boot_length(.lfreq_un) -> .lfreq_un
+    boot_length(.lfreq_un) %>% 
+      tidytable::mutate(type = 'base') -> .lfreq_un
+  } else{
+    .lfreq_un %>% 
+      tidytable::mutate(type = 'base') -> .lfreq_un
   }
   
   # reduce sex-specific length freq sample size (and move unselected samples to 'unsexed' category)

@@ -9,7 +9,7 @@
 al_variab <- function(age_dat) {
   
   age_dat %>% 
-    tidytable::mutate(length = sample(length, .N, replace = TRUE), 
+    tidytable::mutate(length = base::sample(length, .N, replace = TRUE), 
                         .by = c(age, species_code, sex))
 
 }

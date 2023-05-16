@@ -51,7 +51,7 @@ swo_sim <- function(iters = 1,
                     srvy_type = NULL, 
                     save){
   
-  if(isTRUE(write_interm) & is.null(save) | is.null(save)){
+  if(isTRUE(save_interm) & is.null(save) | is.null(save)){
     stop("have to provide a name for the file, save = ...")
   } 
   
@@ -133,14 +133,14 @@ swo_sim <- function(iters = 1,
   
   # compute effective sample size of bootstrapped age/length
   r_age %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga)) %>%
+    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
     tidytable::rename(comp_type = ess) %>% 
     tidytable::mutate.(comp_type = tidytable::case_when(comp_type == 'ess_f' ~ 'female',
                                                         comp_type == 'ess_m' ~ 'male',
                                                         comp_type == 'ess_t' ~ 'total')) -> ess_age
   r_length %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl)) %>%
+    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl, strata = strata)) %>%
     tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
     tidytable::rename(comp_type = ess) %>% 
     tidytable::mutate.(comp_type = tidytable::case_when(comp_type == 'ess_f' ~ 'female',
