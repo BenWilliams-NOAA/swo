@@ -18,8 +18,8 @@ afsc_user = db$username[db$database == "AFSC"]
 afsc_pass = db$password[db$database == "AFSC"]
 
 # set number of desired bootstrap iterations (suggested here: 10 for testing, 500 for running)
-#iters = 500
-iters = 10
+#iters = 1000
+iters = 5
 
 # for testing run time
 if(iters < 100){
@@ -40,12 +40,6 @@ cpue <- vroom::vroom(here::here('data', 'cpue_ai.csv'))
 lfreq <- vroom::vroom(here::here('data', 'lfreq_ai.csv'))
 strata <- vroom::vroom(here::here('data', 'strata_ai.csv'))
 specimen <- vroom::vroom(here::here('data', 'specimen_ai.csv'))
-
-# base case
-swo_sim(iters = iters, lfreq, specimen, cpue, strata, yrs = yrs, strata = FALSE,
-        boot_hauls = TRUE, boot_lengths = TRUE, boot_ages = TRUE,
-        length_samples = NULL, age_samples = NULL, sexlen_samples = NULL,
-        save = 'base', write_interm = FALSE, region = 'ai')
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # run sex-length subsampling scenarios (example fcn)
@@ -134,6 +128,6 @@ swo_sim(iters = iters, lfreq, specimen, cpue, strata, yrs = yrs,
 # For testing run time of 500 iterations
 if(iters < 100){
   end <- Sys.time()
-  runtime <- (end - st) / iters * 500 / 60
+  runtime <- (end - st) / iters * 1000 / 60
   runtime
 }

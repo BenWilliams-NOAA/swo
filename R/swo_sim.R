@@ -52,8 +52,10 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
             cpue_data = cpue_data, strata_data = strata_data, yrs = yrs, strata = strata,
             boot_hauls = FALSE, boot_lengths = FALSE, boot_ages = FALSE,
             length_samples = NULL, age_samples = NULL, sexlen_samples = NULL)
-  oga <- og$age
-  ogl <- og$length
+  oga <- og$age %>% 
+    select(-type)
+  ogl <- og$length %>% 
+    select(-type)
   
   # run iterations
   rr <- purrr::map(1:iters, ~ swo(lfreq_data = lfreq_data, 
@@ -101,16 +103,24 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
                                                         ess == 'ess_m' ~ 'male',
                                                         ess == 'ess_t' ~ 'total')) %>% 
     tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
-                         .by = c(year, species_code, comp_type)) %>% 
-    tidytable::filter.(iss > 0) -> iss_age
+                         .by = c(year, species_code, comp_type, type)) %>% 
+    tidytable::filter.(iss > 0) %>% 
+    tidytable::pivot_wider(names_from = type, values_from = iss) -> iss_age
+  
+  ess_age %>%
+    tidytable::pivot_wider(names_from = type, values_from = value) -> ess_age
   
   ess_size %>% 
     tidytable::mutate.(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
                                                         ess == 'ess_m' ~ 'male',
                                                         ess == 'ess_t' ~ 'total')) %>% 
     tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
-                         .by = c(year, species_code, comp_type)) %>% 
-    tidytable::filter.(iss > 0) -> iss_size
+                         .by = c(year, species_code, comp_type, type)) %>% 
+    tidytable::filter.(iss > 0) %>% 
+    tidytable::pivot_wider(names_from = type, values_from = iss) -> iss_size
+  
+  ess_size %>%
+    tidytable::pivot_wider(names_from = type, values_from = value) -> ess_size
   
   # write out ess/iss results
   if(!is.null(save)){
