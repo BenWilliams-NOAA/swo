@@ -18,8 +18,8 @@ afsc_user = db$username[db$database == "AFSC"]
 afsc_pass = db$password[db$database == "AFSC"]
 
 # set number of desired bootstrap iterations (suggested here: 10 for testing, 500 for running)
-#iters = 500
-iters = 5
+# iters = 500
+iters = 10
 
 # for testing run time
 if(iters < 100){
@@ -71,12 +71,132 @@ swo_sim(iters = iters,
         srvy_type = NULL, 
         save = 'swo_test')
 
-lfreq_data = lfreq
-specimen_data = specimen 
-cpue_data = cpue
-strata_data = strata
-r_t = read_test
+# test swo w/ ae & al at 50%
+swo_sim(iters = iters, 
+        lfreq_data = lfreq, 
+        specimen_data = specimen, 
+        cpue_data = cpue, 
+        strata_data = strata,
+        r_t = read_test,
+        yrs = 2017,
+        strata = FALSE, 
+        boot_hauls = TRUE, 
+        boot_lengths = TRUE, 
+        boot_ages = TRUE,
+        al_var = TRUE, 
+        age_err = TRUE,
+        length_samples = NULL, 
+        age_samples = 0.5, 
+        sexlen_samples = NULL, 
+        region = region, 
+        save_interm = FALSE, 
+        match_orig = FALSE,
+        srvy_type = NULL, 
+        save = 'swo_test_50')
 
+# lfreq_data = lfreq
+# specimen_data = specimen
+# cpue_data = cpue
+# strata_data = strata
+# r_t = read_test
+# boot_hauls = TRUE
+# boot_lengths = TRUE
+# boot_ages = TRUE
+# al_var = TRUE
+# age_err = TRUE
+# age_samples = 0.5
+
+# test swo w/ ae & al at 250%
+swo_sim(iters = iters, 
+        lfreq_data = lfreq, 
+        specimen_data = specimen, 
+        cpue_data = cpue, 
+        strata_data = strata,
+        r_t = read_test,
+        yrs = 2017,
+        strata = FALSE, 
+        boot_hauls = TRUE, 
+        boot_lengths = TRUE, 
+        boot_ages = TRUE,
+        al_var = TRUE, 
+        age_err = TRUE,
+        length_samples = NULL, 
+        age_samples = 2.5, 
+        sexlen_samples = NULL, 
+        region = region, 
+        save_interm = FALSE, 
+        match_orig = FALSE,
+        srvy_type = NULL, 
+        save = 'swo_test_200')
+
+# test swo w/ ae & al at 500%
+swo_sim(iters = iters, 
+        lfreq_data = lfreq, 
+        specimen_data = specimen, 
+        cpue_data = cpue, 
+        strata_data = strata,
+        r_t = read_test,
+        yrs = 2017,
+        strata = FALSE, 
+        boot_hauls = TRUE, 
+        boot_lengths = TRUE, 
+        boot_ages = TRUE,
+        al_var = TRUE, 
+        age_err = TRUE,
+        length_samples = NULL, 
+        age_samples = 5.0, 
+        sexlen_samples = NULL, 
+        region = region, 
+        save_interm = FALSE, 
+        match_orig = FALSE,
+        srvy_type = NULL, 
+        save = 'swo_test_500')
+
+# test swo w/ ae & al at 750%
+swo_sim(iters = iters, 
+        lfreq_data = lfreq, 
+        specimen_data = specimen, 
+        cpue_data = cpue, 
+        strata_data = strata,
+        r_t = read_test,
+        yrs = 2017,
+        strata = FALSE, 
+        boot_hauls = TRUE, 
+        boot_lengths = TRUE, 
+        boot_ages = TRUE,
+        al_var = TRUE, 
+        age_err = TRUE,
+        length_samples = NULL, 
+        age_samples = 7.5, 
+        sexlen_samples = NULL, 
+        region = region, 
+        save_interm = FALSE, 
+        match_orig = FALSE,
+        srvy_type = NULL, 
+        save = 'swo_test_750')
+
+# test swo w/ ae & al at 1000%
+swo_sim(iters = iters, 
+        lfreq_data = lfreq, 
+        specimen_data = specimen, 
+        cpue_data = cpue, 
+        strata_data = strata,
+        r_t = read_test,
+        yrs = 2017,
+        strata = FALSE, 
+        boot_hauls = TRUE, 
+        boot_lengths = TRUE, 
+        boot_ages = TRUE,
+        al_var = TRUE, 
+        age_err = TRUE,
+        length_samples = NULL, 
+        age_samples = 10, 
+        sexlen_samples = NULL, 
+        region = region, 
+        save_interm = FALSE, 
+        match_orig = FALSE,
+        srvy_type = NULL, 
+        save = 'swo_test_1000')
 
 # For testing run time of 500 iterations
 if(iters < 100){

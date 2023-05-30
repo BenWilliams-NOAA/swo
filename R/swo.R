@@ -134,7 +134,8 @@ swo <- function(lfreq_data,
   # reduce overall age sample sizes
   if(!is.null(age_samples)) {
     reduce_samples(.agedat, samples = age_samples, type = 'age') -> .out
-    .agedat <- .out$data
+    .agedat <- .out$data %>% 
+      tidytable::select(-id)
   }
   
   # add age-length variability ----
