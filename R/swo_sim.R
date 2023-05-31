@@ -76,41 +76,41 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
     vroom::vroom_write(oga, file = here::here("output", region, paste0(save, "_orig_age.csv")), delim = ",")
     vroom::vroom_write(ogl, file = here::here("output", region, paste0(save, "_orig_length.csv")), delim = ",")
     r_age %>%
-      tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
+      tidytable::map_df(., ~as.data.frame(.x), .id = "sim") %>% 
       vroom::vroom_write(here::here("output", region, paste0(save, "_comp_age.csv")), delim = ",")
     r_length %>%
-      tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
+      tidytable::map_df(., ~as.data.frame(.x), .id = "sim") %>% 
       vroom::vroom_write(here::here("output", region, paste0(save, "_comp_size.csv")), delim = ",")
   }
   if(isTRUE(write_interm) & !is.null(length_samples) | !is.null(sexlen_samples)) {
     do.call(mapply, c(list, rr, SIMPLIFY = FALSE))$nosamp %>%
-      tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") %>% 
+      tidytable::map_df(., ~as.data.frame(.x), .id = "sim") %>% 
       vroom::vroom_write(here::here("output", region, paste0(save, "_removed_length.csv")), delim = ",")
   }
   
   # ess of bootstrapped age/length
   r_age %>%
-    tidytable::map.(., ~ess_age(sim_data = .x, og_data = oga, strata = strata)) %>%
-    tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_age
+    tidytable::map(., ~ess_age(sim_data = .x, og_data = oga, strata = strata)) %>%
+    tidytable::map_df(., ~as.data.frame(.x), .id = "sim") -> ess_age
   r_length %>%
-    tidytable::map.(., ~ess_size(sim_data = .x, og_data = ogl, strata = strata)) %>%
-    tidytable::map_df.(., ~as.data.frame(.x), .id = "sim") -> ess_size
+    tidytable::map(., ~ess_size(sim_data = .x, og_data = ogl, strata = strata)) %>%
+    tidytable::map_df(., ~as.data.frame(.x), .id = "sim") -> ess_size
   
   ess_age %>% 
-    tidytable::mutate.(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
+    tidytable::mutate(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
                                                         ess == 'ess_m' ~ 'male',
                                                         ess == 'ess_t' ~ 'total')) %>% 
     tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
                          .by = c(year, species_code, comp_type)) %>% 
-    tidytable::filter.(iss > 0) -> iss_age
+    tidytable::filter(iss > 0) -> iss_age
   
   ess_size %>% 
-    tidytable::mutate.(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
+    tidytable::mutate(comp_type = tidytable::case_when(ess == 'ess_f' ~ 'female',
                                                         ess == 'ess_m' ~ 'male',
                                                         ess == 'ess_t' ~ 'total')) %>% 
     tidytable::summarise(iss = psych::harmonic.mean(value, na.rm=T),
                          .by = c(year, species_code, comp_type)) %>% 
-    tidytable::filter.(iss > 0) -> iss_size
+    tidytable::filter(iss > 0) -> iss_size
   
   # write out ess/iss results
   if(!is.null(save)){
