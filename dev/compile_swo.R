@@ -66,13 +66,6 @@ vroom::vroom(here::here('output', 'bs', 't50_iss_ag.csv')) %>%
                rename.('base_iss_length' = base,
                        'sub_iss_length' = sub) %>% 
                mutate.(sub_samp = 't250', 
-                       region = 'bs')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'bs', 'base_iss_ag.csv')) %>% 
-               rename.('iss_age' = base) %>% 
-               left_join.(vroom::vroom(here::here('output', 'bs', 'base_iss_sz.csv'))) %>% 
-               rename.('base_iss_length' = base,
-                       'sub_iss_length' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'bs')) -> bs
 
 # compile ai
@@ -110,13 +103,6 @@ vroom::vroom(here::here('output', 'ai', 't50_iss_ag.csv')) %>%
                rename.('base_iss_length' = base,
                        'sub_iss_length' = sub) %>% 
                mutate.(sub_samp = 't250', 
-                       region = 'ai')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'ai', 'base_iss_ag.csv')) %>% 
-               rename.('iss_age' = base) %>% 
-               left_join.(vroom::vroom(here::here('output', 'ai', 'base_iss_sz.csv'))) %>% 
-               rename.('base_iss_length' = base,
-                       'sub_iss_length' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'ai')) -> ai
 
 # compile goa
@@ -154,13 +140,6 @@ vroom::vroom(here::here('output', 'goa', 't50_iss_ag.csv')) %>%
                rename.('base_iss_length' = base,
                        'sub_iss_length' = sub) %>% 
                mutate.(sub_samp = 't250', 
-                       region = 'goa')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'goa', 'base_iss_ag.csv')) %>% 
-               rename.('iss_age' = base) %>% 
-               left_join.(vroom::vroom(here::here('output', 'goa', 'base_iss_sz.csv'))) %>% 
-               rename.('base_iss_length' = base,
-                       'sub_iss_length' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'goa')) -> goa
 
 # compile all and write results
@@ -196,11 +175,6 @@ vroom::vroom(here::here('output', 'bs', 'a25_iss_ag.csv')) %>%
                rename.('base_iss_age' = base,
                        'sub_iss_age' = sub) %>%
                mutate.(sub_samp = 'a90', 
-                       region = 'bs')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'bs', 'base_iss_ag.csv')) %>% 
-               rename.('base_iss_age' = base,
-                       'sub_iss_age' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'bs')) -> bs
 
 # compile ai
@@ -223,11 +197,6 @@ vroom::vroom(here::here('output', 'ai', 'a25_iss_ag.csv')) %>%
                rename.('base_iss_age' = base,
                        'sub_iss_age' = sub) %>%
                mutate.(sub_samp = 'a90', 
-                       region = 'ai')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'ai', 'base_iss_ag.csv')) %>% 
-               rename.('base_iss_age' = base,
-                       'sub_iss_age' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'ai')) -> ai
 
 # compile goa
@@ -250,11 +219,6 @@ vroom::vroom(here::here('output', 'goa', 'a25_iss_ag.csv')) %>%
                rename.('base_iss_age' = base,
                        'sub_iss_age' = sub) %>%
                mutate.(sub_samp = 'a90', 
-                       region = 'goa')) %>% 
-  bind_rows.(vroom::vroom(here::here('output', 'goa', 'base_iss_ag.csv')) %>% 
-               rename.('base_iss_age' = base,
-                       'sub_iss_age' = sub) %>% 
-               mutate.(sub_samp = 'base', 
                        region = 'goa')) -> goa
 
 # compile all and write results
