@@ -38,4 +38,6 @@ Imports:
     tidytable,
     vroom
 Depends: 
-    data.table
+    data.table,
+    R (>= 2.10)
+LazyData: true
