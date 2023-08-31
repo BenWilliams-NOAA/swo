@@ -1,0 +1,54 @@
+---
+title: "example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+```{r setup}
+# load ----
+library(swo)
+```
+
+This is a basic example which shows you how to query the data for the GOA or AI:
+
+```{r, eval = F}
+library(swo)
+yrs = 2017 # min year to consider
+species = c(10110, 21740) # AFSC species codes
+region = 'GOA'
+afsc_user = 'your_afsc_username'
+afsc_pwd = 'your_afsc_pwd'
+
+# query the database, results are stored in 4 files in the "data" folder
+query_data(region, species, yrs, afsc_user, afsc_pwd)
+
+# bring data into the global environment
+cpue <- vroom::vroom(here::here('data', 'cpue_goa.csv'))
+lfreq <- vroom::vroom(here::here('data', 'lfreq_goa.csv'))
+strata <- vroom::vroom(here::here('data', 'strata_goa.csv'))
+specimen <- vroom::vroom(here::here('data', 'specimen_goa.csv'))
+```
+
+Since the query will not work unless one is connect to the AFSC (and has associated permissions) some example data have been provided.
+
+```{r}
+library(swo)
+
+# get data 
+data(example_cpue) # numerical CPUE by species/year/haul/strata
+data(example_lfreq) # lengthed fish sample data
+data(example_specimen) # aged fish sample data 
+data(example_strata) # survey strata area sizes km^2
+```

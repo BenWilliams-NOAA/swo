@@ -4,7 +4,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of swo is to ...
+The goal of swo is to to provide a consistent framework for exploring the effects of reducing sample sizes (age or length, by sex or combined sexes) within AFSC surveys.
+The methods are applicable to other fishery independent surveys with similar sampling designs.
 
 ## Installation
 
