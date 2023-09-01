@@ -53,7 +53,7 @@ lpop <- function(lcomp, cpue, lngs) {
                             .by = c(year, species_code, stratum, length, sex)) %>%
       tidytable::pivot_wider(names_from = sex, values_from = abund) %>%
       tidytable::left_join(lngs, .) %>%
-      tidytable::mutate(across(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na(.x, 0))) %>%
+      tidytable::mutate(tidytable::across(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na(.x, 0))) %>%
       tidytable::drop_na() -> .temp2
     
     if(length(.sex_cnt_sz$n)>0){
@@ -71,7 +71,7 @@ lpop <- function(lcomp, cpue, lngs) {
                             .by = c(year, species_code, length, sex)) %>%
       tidytable::pivot_wider(names_from = sex, values_from = abund) %>%
       tidytable::left_join(lngs, .) %>%
-      tidytable::mutate(across(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na(.x, 0))) %>%
+      tidytable::mutate(tidytable::across(.cols = c(`1`, `2`, `3`), ~tidytable::replace_na(.x, 0))) %>%
       tidytable::drop_na() %>% 
         tidytable::select(year, species_code, length, males = `1`, females = `2`, unsexed = `3`) 
     } else{
@@ -80,11 +80,10 @@ lpop <- function(lcomp, cpue, lngs) {
                             .by = c(year, species_code, length, sex)) %>%
       tidytable::pivot_wider(names_from = sex, values_from = abund) %>%
       tidytable::left_join(lngs, .) %>%
-      tidytable::mutate(across(.cols = c(`1`, `2`), ~tidytable::replace_na(.x, 0))) %>%
+      tidytable::mutate(tidytable::across(.cols = c(`1`, `2`), ~tidytable::replace_na(.x, 0))) %>%
       tidytable::drop_na() %>%  
         tidytable::select(year, species_code, length, males = `1`, females = `2`) %>%
         tidytable::mutate(unsexed = 0) 
     }
   }
-  
 }
