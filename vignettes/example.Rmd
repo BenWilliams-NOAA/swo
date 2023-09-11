@@ -52,3 +52,13 @@ data(example_lfreq) # lengthed fish sample data
 data(example_specimen) # aged fish sample data 
 data(example_strata) # survey strata area sizes km^2
 ```
+
+
+In the following example a simple example of two replicates is run that incorporates: bootstrap haul, length, and age variability, and reduces the length sample size to 100 per haul. 
+The results are saved in nested folders `output/goa` with file names `example_comp_age.csv` etc.
+
+```{r, eval = F}
+swo_sim(iters = 2, example_lfreq, example_specimen, example_cpue, example_strata, boot_hauls = TRUE,
+    boot_lengths = TRUE, boot_ages = TRUE, length_samples = 100, save = 'example', region = 'goa')
+
+```

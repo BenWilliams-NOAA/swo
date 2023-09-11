@@ -109,9 +109,21 @@ has associated permissions) some example data have been provided.</p>
 <span></span>
 <span><span class="co"># get data </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_cpue</span><span class="op">)</span> <span class="co"># numerical CPUE by species/year/haul/strata</span></span>
+<span><span class="co">#&gt; Warning in data(example_cpue): data set 'example_cpue' not found</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lfreq</span><span class="op">)</span> <span class="co"># lengthed fish sample data</span></span>
+<span><span class="co">#&gt; Warning in data(example_lfreq): data set 'example_lfreq' not found</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_specimen</span><span class="op">)</span> <span class="co"># aged fish sample data </span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_strata</span><span class="op">)</span> <span class="co"># survey strata area sizes km^2</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning in data(example_specimen): data set 'example_specimen' not found</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_strata</span><span class="op">)</span> <span class="co"># survey strata area sizes km^2</span></span>
+<span><span class="co">#&gt; Warning in data(example_strata): data set 'example_strata' not found</span></span></code></pre></div>
+<p>In the following example a simple example of two replicates is run
+that incorporates: bootstrap haul, length, and age variability, and
+reduces the length sample size to 100 per haul. The results are saved in
+nested folders <code>output/goa</code> with file names
+<code>example_comp_age.csv</code> etc.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/swo_sim.html">swo_sim</a></span><span class="op">(</span>iters <span class="op">=</span> <span class="fl">2</span>, <span class="va">example_lfreq</span>, <span class="va">example_specimen</span>, <span class="va">example_cpue</span>, <span class="va">example_strata</span>, boot_hauls <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    boot_lengths <span class="op">=</span> <span class="cn">TRUE</span>, boot_ages <span class="op">=</span> <span class="cn">TRUE</span>, length_samples <span class="op">=</span> <span class="fl">100</span>, save <span class="op">=</span> <span class="st">'example'</span>, region <span class="op">=</span> <span class="st">'goa'</span><span class="op">)</span></span></code></pre></div>
   </main>
 </div>
 
