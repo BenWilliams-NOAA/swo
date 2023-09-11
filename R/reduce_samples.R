@@ -8,7 +8,7 @@
 reduce_samples <- function(data, samples, grp = c('year', 'species_code', 'stratum', 'hauljoin'), type = NULL){
 
   data %>% 
-    tidytable::mutate.(id = .I) -> .inter
+    tidytable::mutate(id = .I) -> .inter
   
   if(type == 'length'){
     core_samp(.inter, samples, grp = grp, replace = FALSE) -> .new_samp
@@ -18,7 +18,7 @@ reduce_samples <- function(data, samples, grp = c('year', 'species_code', 'strat
   }
 
   .inter %>%
-    tidytable::anti_join.(.new_samp, by = "id") %>% 
+    tidytable::anti_join(.new_samp, by = "id") %>% 
     dplyr::group_by(year, species_code, stratum, hauljoin, length) %>%
     dplyr::count(name = 'frequency') -> .redux_samp
   
