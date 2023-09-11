@@ -35,7 +35,7 @@ swo_sim <- function(iters = 1, lfreq_data, specimen_data, cpue_data, strata_data
   if(isTRUE(write_interm) & is.null(save) | is.null(save)){
     stop("have to provide a name for the file, save = ...")
   } 
-  
+  if(yrs > max(lfreq_data$year)) { stop("all years have been filtered from the data.")}
   # create storage location
   region = tolower(region)
   if(!dir.exists(here::here('output', region))){
